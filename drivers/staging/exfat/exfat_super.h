@@ -37,7 +37,7 @@
 #include "exfat_part.h"
 #include "exfat_nls.h"
 #include "exfat_api.h"
-#include "exfat.h"
+#include "exfat_core.h"
 
 #define EXFAT_ERRORS_CONT  1    /* ignore error and continue */
 #define EXFAT_ERRORS_PANIC 2    /* panic on error */

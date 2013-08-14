@@ -24,7 +24,7 @@
 #include "exfat_cache.h"
 #include "exfat_nls.h"
 #include "exfat_super.h"
-#include "exfat.h"
+#include "exfat_core.h"
 
 FS_STRUCT_T fs_struct[MAX_DRIVE];
 

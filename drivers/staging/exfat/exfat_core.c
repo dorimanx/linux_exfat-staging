@@ -36,7 +36,7 @@
 #include "exfat_nls.h"
 #include "exfat_api.h"
 #include "exfat_super.h"
-#include "exfat.h"
+#include "exfat_core.h"
 
 #include <linux/blkdev.h>
 
