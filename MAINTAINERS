@@ -7931,6 +7931,12 @@ M:	Mark Einon <mark.einon@gmail.com>
 S:	Odd Fixes
 F:	drivers/staging/et131x/
 
+STAGING - EXFAT FILE SYSTEM
+M:	Benjamin Valentin <benpicco@zedat.fu-berlin.de>
+L:	linux-fsdevel <linux-fsdevel@vger.kernel.org>
+S:	Odd Fixes
+F:	drivers/staging/exfat/
+
 STAGING - FLARION FT1000 DRIVERS
 M:	Marek Belisko <marek.belisko@gmail.com>
 S:	Odd Fixes

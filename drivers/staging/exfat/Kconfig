@@ -1,0 +1,21 @@
+config EXFAT_FS
+	tristate "exFAT fs support"
+	select NLS
+	help
+	  This adds support for the exFAT file system.
+
+if EXFAT_FS
+
+config EXFAT_DISCARD
+	bool "enable discard support"
+	default y
+
+config EXFAT_KERNEL_DEBUG
+	bool "enable kernel debug features via ioctl"
+	default y
+
+config EXFAT_DEBUG_MSG
+	bool "print debug messages"
+	default n
+
+endif # EXFAT_FS

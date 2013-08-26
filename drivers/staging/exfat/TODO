@@ -1,0 +1,8 @@
+* fix coding style
+* remove dead code
+* switch from custom macros to Linux macros
+* merge with existing FAT implementation
+
+Please send any patches to Greg Kroah-Hartman <greg@kroah.com>,
+Benjamin Valentin <benpicco@zedat.fu-berlin.de>.
+CCing linux-fsdevel <linux-fsdevel@vger.kernel.org> would be great too.
