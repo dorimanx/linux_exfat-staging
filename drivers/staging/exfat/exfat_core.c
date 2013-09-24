@@ -853,7 +853,7 @@ INT32 ffsMoveFile(struct inode *old_parent_inode, FILE_ID_T *fid, struct inode *
 	FILE_ID_T *new_fid = NULL;
 	INT32 new_entry=0;
 
-	if ((new_path == NULL) || (STRLEN(new_path) == 0))
+	if ((new_path == NULL) || (*new_path == '\0'))
 		return FFS_ERROR;
 
 	update_parent_info(fid, old_parent_inode);
@@ -4185,7 +4185,7 @@ void fat_attach_count_to_dos_name(UINT8 *dosname, INT32 count)
 	str_count[0] = '~';
 	str_count[1] = '\0';
 	my_itoa(&(str_count[1]), count);
-	length = STRLEN(str_count);
+	length = strlen(str_count);
 
 	i = j = 0;
 	while (j <= (8 - length)) {
@@ -4295,7 +4295,7 @@ INT32 resolve_path(struct inode *inode, UINT8 *path, CHAIN_T *p_dir, UNI_NAME_T 
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 	FILE_ID_T *fid = &(EXFAT_I(inode)->fid);
 
-	if (STRLEN(path) >= (MAX_NAME_LENGTH * MAX_CHARSET_SIZE))
+	if (strlen(path) >= (MAX_NAME_LENGTH * MAX_CHARSET_SIZE))
 		return(FFS_INVALIDPATH);
 
 	STRCPY(name_buf, path);

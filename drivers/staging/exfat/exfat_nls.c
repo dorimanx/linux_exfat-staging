@@ -262,7 +262,7 @@ void nls_cstring_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, UINT8
 
 
 	/* strip all trailing spaces */
-	end_of_name = p_cstring + STRLEN((INT8 *) p_cstring);
+	end_of_name = p_cstring + strlen((INT8 *) p_cstring);
 
 	while (*(--end_of_name) == ' ') {
 		if (end_of_name < p_cstring) break;

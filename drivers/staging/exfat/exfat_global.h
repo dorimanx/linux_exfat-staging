@@ -87,13 +87,10 @@ extern "C" {
 #define STRCAT(str1, str2)              strcat(str1, str2)
 #define STRCMP(str1, str2)              strcmp(str1, str2)
 #define STRNCMP(str1, str2, n)          strncmp(str1, str2, n)
-#define STRLEN(str)                     strlen(str)
 
 	INT32 __wstrchr(UINT16 *str, UINT16 wchar);
-	INT32 __wstrlen(UINT16 *str);
 
 #define WSTRCHR(str, wchar)             __wstrchr(str, wchar)
-#define WSTRLEN(str)                    __wstrlen(str)
 
 #ifdef CONFIG_EXFAT_DEBUG_MSG
 #define PRINTK(...)			\
