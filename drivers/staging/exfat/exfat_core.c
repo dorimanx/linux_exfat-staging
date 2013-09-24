@@ -3351,7 +3351,7 @@ s32 write_partial_entries_in_entry_set (struct super_block *sb, ENTRY_SET_CACHE_
 	dir.size = 0xffffffff;
 
 	byte_offset = (es->sector - START_SECTOR(dir.dir)) << p_bd->sector_size_bits;
-	byte_offset += ((s32)ep - (s32)&(es->__buf)) + es->offset;
+	byte_offset += ((void**)ep - &(es->__buf)) + es->offset;
 
 	ret =_walk_fat_chain(sb, &dir, byte_offset, &clu);
 	if (ret != FFS_SUCCESS)
