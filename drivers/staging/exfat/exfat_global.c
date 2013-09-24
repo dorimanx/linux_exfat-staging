@@ -18,22 +18,6 @@
 
 #include "exfat_global.h"
 
-s32 __wstrchr(u16 *str, u16 wchar)
-{
-	while (*str) {
-		if (*(str++) == wchar) return(1);
-	}
-	return(0);
-}
-
-s32 __wstrlen(u16 *str)
-{
-	s32 length = 0;
-
-	while (*(str++)) length++;
-	return(length);
-}
-
 #define BITMAP_LOC(v)           ((v) >> 3)
 #define BITMAP_SHIFT(v)         ((v) & 0x07)
 

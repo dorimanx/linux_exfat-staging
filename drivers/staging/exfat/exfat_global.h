@@ -29,10 +29,6 @@
 extern "C" {
 #endif
 
-s32 __wstrchr(u16 *str, u16 wchar);
-
-#define WSTRCHR(str, wchar)             __wstrchr(str, wchar)
-
 #ifdef CONFIG_EXFAT_DEBUG_MSG
 #define PRINTK(...)			\
 	do {								\
