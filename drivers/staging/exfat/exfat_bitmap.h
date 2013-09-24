@@ -16,35 +16,18 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef _EXFAT_GLOBAL_H
-#define _EXFAT_GLOBAL_H
+#ifndef _EXFAT_BITMAP_H
+#define _EXFAT_BITMAP_H
 
-#include <linux/kernel.h>
-#include <linux/mm.h>
-#include <linux/slab.h>
-#include <linux/string.h>
-#include <linux/fs.h>
+#include <linux/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifdef CONFIG_EXFAT_DEBUG_MSG
-#define DPRINTK(...)			\
-	do {								\
-		printk("[EXFAT] " __VA_ARGS__);	\
-	} while(0)
-#else
-#define DPRINTK(...)
-#endif
-
-	void    Bitmap_set_all(u8 *bitmap, s32 mapsize);
-	void    Bitmap_clear_all(u8 *bitmap, s32 mapsize);
-	s32   Bitmap_test(u8 *bitmap, s32 i);
-	void    Bitmap_set(u8 *bitmap, s32 i);
-	void    Bitmap_clear(u8 *bitmpa, s32 i);
-	void    Bitmap_nbits_set(u8 *bitmap, s32 offset, s32 nbits);
-	void    Bitmap_nbits_clear(u8 *bitmap, s32 offset, s32 nbits);
+s32	exfat_bitmap_test(u8 *bitmap, s32 i);
+void	exfat_bitmap_set(u8 *bitmap, s32 i);
+void	exfat_bitmap_clear(u8 *bitmpa, s32 i);
 
 #ifdef __cplusplus
 }

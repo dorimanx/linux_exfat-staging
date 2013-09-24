@@ -19,7 +19,6 @@
 #ifndef _EXFAT_H
 #define _EXFAT_H
 
-#include "exfat_global.h"
 #include "exfat_data.h"
 #include "exfat_oal.h"
 
@@ -95,6 +94,12 @@ extern "C" {
 #define CLUSTER_16(x)           ((u16)(x))
 #define CLUSTER_32(x)           ((u32)(x))
 
+#define FALSE			0
+#define TRUE			1
+
+#define MIN(a,b)		(((a)<(b))?(a):(b))
+#define MAX(a,b)		(((a)>(b))?(a):(b))
+
 #define START_SECTOR(x) \
         ( (((x)-2) << p_fs->sectors_per_clu_bits) + p_fs->data_start_sector )
 
@@ -147,7 +152,7 @@ extern "C" {
 #define SET16_A(p_dst,src)      *((u16 *)(p_dst)) = (u16)(src)
 #define SET32_A(p_dst,src)      *((u32 *)(p_dst)) = (u32)(src)
 #define SET64_A(p_dst,src)      *((u64 *)(p_dst)) = (u64)(src)
-#else
+#else 	/* BIG_ENDIAN */
 #define GET16_A(p_src)          GET16(p_src)
 #define GET32_A(p_src)          GET32(p_src)
 #define GET64_A(p_src)          GET64(p_src)
@@ -161,6 +166,15 @@ extern "C" {
 #define LOW_INDEX_BIT (16-HIGH_INDEX_BIT)
 #define UTBL_ROW_COUNT (1<<LOW_INDEX_BIT)
 #define UTBL_COL_COUNT (1<<HIGH_INDEX_BIT)
+
+#ifdef CONFIG_EXFAT_DEBUG_MSG
+#define DPRINTK(...)			\
+	do {								\
+		printk("[EXFAT] " __VA_ARGS__);	\
+	} while(0)
+#else
+#define DPRINTK(...)
+#endif
 
 	static inline u16 get_col_index(u16 i)
 	{

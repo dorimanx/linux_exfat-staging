@@ -19,7 +19,6 @@
 #ifndef _EXFAT_PART_H
 #define _EXFAT_PART_H
 
-#include "exfat_global.h"
 #include "exfat_api.h"
 
 #ifdef __cplusplus

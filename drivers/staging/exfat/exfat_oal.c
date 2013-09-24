@@ -28,7 +28,6 @@
 #include <linux/semaphore.h>
 #include <linux/time.h>
 
-#include "exfat_global.h"
 #include "exfat_api.h"
 #include "exfat_oal.h"
 

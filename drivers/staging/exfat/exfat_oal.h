@@ -19,7 +19,7 @@
 #ifndef _EXFAT_OAL_H
 #define _EXFAT_OAL_H
 
-#include "exfat_global.h"
+#include <linux/semaphore.h>
 #include <linux/version.h>
 
 #ifdef __cplusplus

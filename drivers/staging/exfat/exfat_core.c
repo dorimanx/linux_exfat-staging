@@ -29,10 +29,9 @@
 #include <linux/param.h>
 #include <linux/log2.h>
 
-#include "exfat_global.h"
+#include "exfat_bitmap.h"
 #include "exfat_data.h"
 #include "exfat_oal.h"
-
 #include "exfat_blkdev.h"
 #include "exfat_cache.h"
 #include "exfat_nls.h"
@@ -2139,7 +2138,7 @@ s32 set_alloc_bitmap(struct super_block *sb, u32 clu)
 
 	sector = START_SECTOR(p_fs->map_clu) + i;
 
-	Bitmap_set((u8 *) p_fs->vol_amap[i]->b_data, b);
+	exfat_bitmap_set((u8 *) p_fs->vol_amap[i]->b_data, b);
 
 	return (sector_write(sb, sector, p_fs->vol_amap[i], 0));
 }
@@ -2161,7 +2160,7 @@ s32 clr_alloc_bitmap(struct super_block *sb, u32 clu)
 
 	sector = START_SECTOR(p_fs->map_clu) + i;
 
-	Bitmap_clear((u8 *) p_fs->vol_amap[i]->b_data, b);
+	exfat_bitmap_clear((u8 *) p_fs->vol_amap[i]->b_data, b);
 
 	return (sector_write(sb, sector, p_fs->vol_amap[i], 0));
 
@@ -4105,8 +4104,8 @@ s32 fat_generate_dos_name(struct super_block *sb, CHAIN_T *p_dir, DOS_NAME_T *p_
 	DOS_DENTRY_T *ep;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	Bitmap_clear_all(bmap, 128);
-	Bitmap_set(bmap, 0);
+	memset(bmap, 0, sizeof bmap);
+	exfat_bitmap_set(bmap, 0);
 
 	if (p_dir->dir == CLUSTER_32(0))
 		dentries_per_clu = p_fs->dentries_in_root;
@@ -4152,7 +4151,7 @@ s32 fat_generate_dos_name(struct super_block *sb, CHAIN_T *p_dir, DOS_NAME_T *p_
 			}
 
 			if ((count > 0) && (count < 1024))
-				Bitmap_set(bmap, count);
+				exfat_bitmap_set(bmap, count);
 		}
 
 		if (p_dir->dir == CLUSTER_32(0))
@@ -4166,7 +4165,7 @@ s32 fat_generate_dos_name(struct super_block *sb, CHAIN_T *p_dir, DOS_NAME_T *p_
 	for (i = 0; i < 128; i++) {
 		if (bmap[i] != 0xFF) {
 			for (j = 0; j < 8; j++) {
-				if (Bitmap_test(&(bmap[i]), j) == 0) {
+				if (exfat_bitmap_test(&(bmap[i]), j) == 0) {
 					count = (i << 3) + j;
 					break;
 				}

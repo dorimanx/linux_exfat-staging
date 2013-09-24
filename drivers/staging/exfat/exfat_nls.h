@@ -21,7 +21,6 @@
 
 #include <linux/nls.h>
 
-#include "exfat_global.h"
 #include "exfat_api.h"
 
 #ifdef __cplusplus

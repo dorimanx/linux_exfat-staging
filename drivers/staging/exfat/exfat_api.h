@@ -19,7 +19,7 @@
 #ifndef _EXFAT_API_H
 #define _EXFAT_API_H
 
-#include "exfat_global.h"
+#include <linux/fs.h>
 
 #ifdef __cplusplus
 extern "C" {

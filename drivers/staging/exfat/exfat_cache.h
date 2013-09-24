@@ -19,7 +19,8 @@
 #ifndef _EXFAT_CACHE_H
 #define _EXFAT_CACHE_H
 
-#include "exfat_global.h"
+#include <linux/fs.h>
+#include <linux/types.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -16,22 +16,12 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "exfat_global.h"
+#include "exfat_bitmap.h"
 
 #define BITMAP_LOC(v)           ((v) >> 3)
 #define BITMAP_SHIFT(v)         ((v) & 0x07)
 
-void Bitmap_set_all(u8 *bitmap, s32 mapsize)
-{
-	memset(bitmap, 0xFF, mapsize);
-}
-
-void Bitmap_clear_all(u8 *bitmap, s32 mapsize)
-{
-	memset(bitmap, 0x0, mapsize);
-}
-
-s32 Bitmap_test(u8 *bitmap, s32 i)
+s32 exfat_bitmap_test(u8 *bitmap, s32 i)
 {
 	u8 data;
 
@@ -41,30 +31,12 @@ s32 Bitmap_test(u8 *bitmap, s32 i)
 	return 0;
 }
 
-void Bitmap_set(u8 *bitmap, s32 i)
+void exfat_bitmap_set(u8 *bitmap, s32 i)
 {
 	bitmap[BITMAP_LOC(i)] |= (0x01 << BITMAP_SHIFT(i));
 }
 
-void Bitmap_clear(u8 *bitmap, s32 i)
+void exfat_bitmap_clear(u8 *bitmap, s32 i)
 {
 	bitmap[BITMAP_LOC(i)] &= ~(0x01 << BITMAP_SHIFT(i));
-}
-
-void Bitmap_nbits_set(u8 *bitmap, s32 offset, s32 nbits)
-{
-	s32   i;
-
-	for (i = 0; i < nbits; i++) {
-		Bitmap_set(bitmap, offset+i);
-	}
-}
-
-void Bitmap_nbits_clear(u8 *bitmap, s32 offset, s32 nbits)
-{
-	s32   i;
-
-	for (i = 0; i < nbits; i++) {
-		Bitmap_clear(bitmap, offset+i);
-	}
 }
