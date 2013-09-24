@@ -50,8 +50,6 @@ s32 __wstrchr(u16 *str, u16 wchar);
 	void    Bitmap_nbits_set(u8 *bitmap, s32 offset, s32 nbits);
 	void    Bitmap_nbits_clear(u8 *bitmap, s32 offset, s32 nbits);
 
-	void    my_itoa(char *buf, s32 v);
-
 #ifdef __cplusplus
 }
 #endif

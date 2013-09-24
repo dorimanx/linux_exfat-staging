@@ -83,25 +83,3 @@ void Bitmap_nbits_clear(u8 *bitmap, s32 offset, s32 nbits)
 		Bitmap_clear(bitmap, offset+i);
 	}
 }
-
-/* integer to ascii conversion */
-void my_itoa(char *buf, s32 v)
-{
-	s32 mod[10];
-	s32 i;
-
-	for (i = 0; i < 10; i++) {
-		mod[i] = (v % 10);
-		v = v / 10;
-		if (v == 0) break;
-	}
-
-	if (i == 10)
-		i--;
-
-	for (; i >= 0; i--) {
-		*buf = (u8) ('0' + mod[i]);
-		buf++;
-	}
-	*buf = '\0';
-}

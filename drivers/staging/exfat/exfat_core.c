@@ -4189,9 +4189,7 @@ void fat_attach_count_to_dos_name(u8 *dosname, s32 count)
 	s32 i, j, length;
 	char str_count[6];
 
-	str_count[0] = '~';
-	str_count[1] = '\0';
-	my_itoa(&(str_count[1]), count);
+	snprintf(str_count, sizeof str_count, "~%d", count);
 	length = strlen(str_count);
 
 	i = j = 0;
