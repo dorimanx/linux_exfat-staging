@@ -30,8 +30,6 @@
 extern "C" {
 #endif
 
-#define FREE(mem)                       if (mem) kfree(mem)
-
 s32 __wstrchr(u16 *str, u16 wchar);
 
 #define WSTRCHR(str, wchar)             __wstrchr(str, wchar)

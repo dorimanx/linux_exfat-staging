@@ -1440,7 +1440,8 @@ static struct inode *exfat_alloc_inode(struct super_block *sb) {
 
 static void exfat_destroy_inode(struct inode *inode)
 {
-	FREE(EXFAT_I(inode)->target);
+	if (EXFAT_I(inode)->target)
+		kfree(EXFAT_I(inode)->target);
 	EXFAT_I(inode)->target = NULL;
 
 	kmem_cache_free(exfat_inode_cachep, EXFAT_I(inode));

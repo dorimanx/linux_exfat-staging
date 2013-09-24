@@ -2092,7 +2092,8 @@ s32 load_alloc_bitmap(struct super_block *sb)
 						while (i < j)
 							brelse(p_fs->vol_amap[i++]);
 
-						FREE(p_fs->vol_amap);
+						if (p_fs->vol_amap)
+							kfree(p_fs->vol_amap);
 						p_fs->vol_amap = NULL;
 						return ret;
 					}
@@ -2121,7 +2122,8 @@ void free_alloc_bitmap(struct super_block *sb)
 		__brelse(p_fs->vol_amap[i]);
 	}
 
-	FREE(p_fs->vol_amap);
+	if (p_fs->vol_amap)
+		kfree(p_fs->vol_amap);
 	p_fs->vol_amap = NULL;
 }
 
@@ -2411,11 +2413,13 @@ void free_upcase_table(struct super_block *sb)
 	u16 **upcase_table;
 
 	upcase_table = p_fs->vol_utbl;
-	for(i = 0 ; i < UTBL_COL_COUNT ; i ++)
-		FREE(upcase_table[i]);
+	for(i = 0 ; i < UTBL_COL_COUNT ; i ++) {
+		if (upcase_table[i])
+			kfree(upcase_table[i]);
+	}
 
-	FREE(p_fs->vol_utbl);
-
+	if (p_fs->vol_utbl)
+		kfree(p_fs->vol_utbl);
 	p_fs->vol_utbl = NULL;
 }
 
@@ -3271,14 +3275,15 @@ ENTRY_SET_CACHE_T *get_entry_set_in_dir (struct super_block *sb, CHAIN_T *p_dir,
 err_out:
 	PRINTK("get_entry_set_in_dir exited NULL (es %p)\n", es);
 	if (es)
-		FREE(es);
+		kfree(es);
 	return NULL;
 }
 
 void release_entry_set (ENTRY_SET_CACHE_T *es)
 {
 	PRINTK("release_entry_set %p\n", es);
-	FREE(es);
+	if(es)
+		kfree(es);
 }
 
 
