@@ -97,12 +97,12 @@ extern struct timezone sys_tz;
 #if (ELAPSED_TIME == 1)
 #include <linux/time.h>
 
-static UINT32 __t1, __t2;
-static UINT32 get_current_msec(void)
+static u32 __t1, __t2;
+static u32 get_current_msec(void)
 {
 	struct timeval tm;
 	do_gettimeofday(&tm);
-	return((UINT32)(tm.tv_sec*1000000 + tm.tv_usec));
+	return((u32)(tm.tv_sec*1000000 + tm.tv_usec));
 }
 #define TIME_START()        do {__t1 = get_current_msec();} while (0)
 #define TIME_END()          do {__t2 = get_current_msec();} while (0)
@@ -422,7 +422,7 @@ static int exfat_create(struct inode *dir, struct dentry *dentry, umode_t mode, 
 
 	ts = CURRENT_TIME_SEC;
 
-	err = FsCreateFile(dir, (UINT8 *) dentry->d_name.name, FM_REGULAR, &fid);
+	err = FsCreateFile(dir, (u8 *) dentry->d_name.name, FM_REGULAR, &fid);
 	if (err) {
 		if (err == FFS_INVALIDPATH)
 			err = -EINVAL;
@@ -471,7 +471,7 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
 	if (qname->len == 0)
 		return -ENOENT;
 
-	err = FsLookupFile(dir, (UINT8 *) qname->name, fid);
+	err = FsLookupFile(dir, (u8 *) qname->name, fid);
 	if (err)
 		return -ENOENT;
 
@@ -491,7 +491,7 @@ static struct dentry *exfat_lookup(struct inode *dir, struct dentry *dentry, uns
 	int err;
 	FILE_ID_T fid;
 	loff_t i_pos;
-	UINT64 ret;
+	u64 ret;
 	mode_t i_mode;
 
 	__lock_super(sb);
@@ -599,8 +599,8 @@ static int exfat_symlink(struct inode *dir, struct dentry *dentry, const char *t
 	FILE_ID_T fid;
 	loff_t i_pos;
 	int err;
-	UINT64 len = (UINT64) strlen(target);
-	UINT64 ret;
+	u64 len = (u64) strlen(target);
+	u64 ret;
 
 	__lock_super(sb);
 
@@ -608,7 +608,7 @@ static int exfat_symlink(struct inode *dir, struct dentry *dentry, const char *t
 
 	ts = CURRENT_TIME_SEC;
 
-	err = FsCreateFile(dir, (UINT8 *) dentry->d_name.name, FM_SYMLINK, &fid);
+	err = FsCreateFile(dir, (u8 *) dentry->d_name.name, FM_SYMLINK, &fid);
 	if (err) {
 		if (err == FFS_INVALIDPATH)
 			err = -EINVAL;
@@ -656,7 +656,7 @@ static int exfat_symlink(struct inode *dir, struct dentry *dentry, const char *t
 		err = -ENOMEM;
 		goto out;
 	}
-	MEMCPY(EXFAT_I(inode)->target, target, len+1);
+	memcpy(EXFAT_I(inode)->target, target, len+1);
 
 	dentry->d_time = dentry->d_parent->d_inode->i_version;
 	d_instantiate(dentry, inode);
@@ -682,7 +682,7 @@ static int exfat_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
 
 	ts = CURRENT_TIME_SEC;
 
-	err = FsCreateDir(dir, (UINT8 *) dentry->d_name.name, &fid);
+	err = FsCreateDir(dir, (u8 *) dentry->d_name.name, &fid);
 	if (err) {
 		if (err == FFS_INVALIDPATH)
 			err = -EINVAL;
@@ -1540,7 +1540,7 @@ static int exfat_statfs(struct dentry *dentry, struct kstatfs *buf)
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 	VOL_INFO_T info;
 
-	if (p_fs->used_clusters == (UINT32) ~0) {
+	if (p_fs->used_clusters == (u32) ~0) {
 		if (FFS_MEDIAERR == FsGetVolInfo(sb, &info))
 			return -EIO;
 

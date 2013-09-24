@@ -34,13 +34,13 @@
 
 DEFINE_SEMAPHORE(z_sem);
 
-INT32 sm_init(struct semaphore *sm)
+s32 sm_init(struct semaphore *sm)
 {
 	sema_init(sm, 1);
 	return(0);
 }
 
-INT32 sm_P(struct semaphore *sm)
+s32 sm_P(struct semaphore *sm)
 {
 	down(sm);
 	return 0;

@@ -17,6 +17,7 @@
  */
 
 #include <linux/blkdev.h>
+#include <linux/log2.h>
 
 #include "exfat_global.h"
 #include "exfat_blkdev.h"
@@ -24,24 +25,24 @@
 #include "exfat_api.h"
 #include "exfat_super.h"
 
-INT32 bdev_init(void)
+s32 bdev_init(void)
 {
 	return(FFS_SUCCESS);
 }
 
-INT32 bdev_shutdown(void)
+s32 bdev_shutdown(void)
 {
 	return(FFS_SUCCESS);
 }
 
-INT32 bdev_open(struct super_block *sb)
+s32 bdev_open(struct super_block *sb)
 {
 	BD_INFO_T *p_bd = &(EXFAT_SB(sb)->bd_info);
 
 	if (p_bd->opened) return(FFS_SUCCESS);
 
 	p_bd->sector_size      = bdev_logical_block_size(sb->s_bdev);
-	p_bd->sector_size_bits = my_log2(p_bd->sector_size);
+	p_bd->sector_size_bits = ilog2(p_bd->sector_size);
 	p_bd->sector_size_mask = p_bd->sector_size - 1;
 	p_bd->num_sectors      = i_size_read(sb->s_bdev->bd_inode) >> p_bd->sector_size_bits;
 
@@ -50,7 +51,7 @@ INT32 bdev_open(struct super_block *sb)
 	return(FFS_SUCCESS);
 }
 
-INT32 bdev_close(struct super_block *sb)
+s32 bdev_close(struct super_block *sb)
 {
 	BD_INFO_T *p_bd = &(EXFAT_SB(sb)->bd_info);
 
@@ -60,7 +61,7 @@ INT32 bdev_close(struct super_block *sb)
 	return(FFS_SUCCESS);
 }
 
-INT32 bdev_read(struct super_block *sb, UINT32 secno, struct buffer_head **bh, UINT32 num_secs, INT32 read)
+s32 bdev_read(struct super_block *sb, u32 secno, struct buffer_head **bh, u32 num_secs, s32 read)
 {
 	BD_INFO_T *p_bd = &(EXFAT_SB(sb)->bd_info);
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
@@ -88,9 +89,9 @@ INT32 bdev_read(struct super_block *sb, UINT32 secno, struct buffer_head **bh, U
 	return(FFS_MEDIAERR);
 }
 
-INT32 bdev_write(struct super_block *sb, UINT32 secno, struct buffer_head *bh, UINT32 num_secs, INT32 sync)
+s32 bdev_write(struct super_block *sb, u32 secno, struct buffer_head *bh, u32 num_secs, s32 sync)
 {
-	INT32 count;
+	s32 count;
 	struct buffer_head *bh2;
 	BD_INFO_T *p_bd = &(EXFAT_SB(sb)->bd_info);
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
@@ -119,7 +120,7 @@ INT32 bdev_write(struct super_block *sb, UINT32 secno, struct buffer_head *bh, U
 			goto no_bh;
 
 		lock_buffer(bh2);
-		MEMCPY(bh2->b_data, bh->b_data, count);
+		memcpy(bh2->b_data, bh->b_data, count);
 		set_buffer_uptodate(bh2);
 		mark_buffer_dirty(bh2);
 		unlock_buffer(bh2);
@@ -139,7 +140,7 @@ no_bh:
 	return (FFS_MEDIAERR);
 }
 
-INT32 bdev_sync(struct super_block *sb)
+s32 bdev_sync(struct super_block *sb)
 {
 	BD_INFO_T *p_bd = &(EXFAT_SB(sb)->bd_info);
 #ifdef CONFIG_EXFAT_KERNEL_DEBUG

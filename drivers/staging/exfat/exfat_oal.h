@@ -27,16 +27,16 @@ extern "C" {
 #endif
 
 	typedef struct {
-		UINT16      sec;        /* 0 ~ 59               */
-		UINT16      min;        /* 0 ~ 59               */
-		UINT16      hour;       /* 0 ~ 23               */
-		UINT16      day;        /* 1 ~ 31               */
-		UINT16      mon;        /* 1 ~ 12               */
-		UINT16      year;       /* 0 ~ 127 (since 1980) */
+		u16      sec;        /* 0 ~ 59               */
+		u16      min;        /* 0 ~ 59               */
+		u16      hour;       /* 0 ~ 23               */
+		u16      day;        /* 1 ~ 31               */
+		u16      mon;        /* 1 ~ 12               */
+		u16      year;       /* 0 ~ 127 (since 1980) */
 	} TIMESTAMP_T;
 
-	INT32 sm_init(struct semaphore *sm);
-	INT32 sm_P(struct semaphore *sm);
+	s32 sm_init(struct semaphore *sm);
+	s32 sm_P(struct semaphore *sm);
 	void  sm_V(struct semaphore *sm);
 
 	TIMESTAMP_T *tm_current(TIMESTAMP_T *tm);
