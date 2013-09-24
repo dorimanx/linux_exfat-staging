@@ -41,9 +41,6 @@
 
 #include <linux/blkdev.h>
 
-#ifdef CONFIG_EXFAT_THERE_IS_MBR
-#include "exfat_part.h"
-#endif
 
 #ifdef CONFIG_EXFAT_ELAPSED_TIME
 #include <linux/time.h>
@@ -147,10 +144,6 @@ s32 ffsShutdown(void)
 s32 ffsMountVol(struct super_block *sb, s32 drv)
 {
 	s32 i, ret;
-#ifdef CONFIG_EXFAT_THERE_IS_MBR
-	MBR_SECTOR_T *p_mbr;
-	PART_ENTRY_T *p_pte;
-#endif
 	PBR_SECTOR_T *p_pbr;
 	struct buffer_head *tmp_bh = NULL;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
@@ -172,36 +165,7 @@ s32 ffsMountVol(struct super_block *sb, s32 drv)
 	if (sector_read(sb, 0, &tmp_bh, 1) != FFS_SUCCESS)
 		return FFS_MEDIAERR;
 
-#ifdef CONFIG_EXFAT_THERE_IS_MBR
-	if (buf[0] != 0xEB) {
-		p_mbr = (MBR_SECTOR_T *) tmp_bh->b_data;
-
-		if (GET16_A(p_mbr->signature) != MBR_SIGNATURE) {
-			brelse(tmp_bh);
-			bdev_close(sb);
-			return FFS_FORMATERR;
-		}
-
-		p_pte = (PART_ENTRY_T *) p_mbr->partition + 0;
-		p_fs->PBR_sector = GET32(p_pte->start_sector);
-		p_fs->num_sectors = GET32(p_pte->num_sectors);
-
-		if (p_fs->num_sectors == 0) {
-			brelse(tmp_bh);
-			bdev_close(sb);
-			return FFS_ERROR;
-		}
-
-		if (sector_read(sb, p_fs->PBR_sector, &tmp_bh, 1) != FFS_SUCCESS) {
-			bdev_close(sb);
-			return FFS_MEDIAERR;
-		}
-	} else {
-#endif
 		p_fs->PBR_sector = 0;
-#ifdef CONFIG_EXFAT_THERE_IS_MBR
-	}
-#endif
 
 	p_pbr = (PBR_SECTOR_T *) tmp_bh->b_data;
 

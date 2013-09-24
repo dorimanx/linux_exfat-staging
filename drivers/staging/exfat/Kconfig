@@ -10,10 +10,6 @@ config EXFAT_DISCARD
 	bool "enable discard support"
 	default y
 
-config EXFAT_THERE_IS_MBR
-	bool "if there is no MBR (e.g. memory card)"
-	default n
-
 config EXFAT_DELAYED_SYNC
 	bool "enable delayed sync"
 	default n

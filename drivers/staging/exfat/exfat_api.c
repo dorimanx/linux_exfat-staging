@@ -24,7 +24,6 @@
 #include "exfat_data.h"
 #include "exfat_oal.h"
 
-#include "exfat_part.h"
 #include "exfat_nls.h"
 #include "exfat_api.h"
 #include "exfat_super.h"

@@ -76,7 +76,6 @@
 
 #include "exfat_blkdev.h"
 #include "exfat_cache.h"
-#include "exfat_part.h"
 #include "exfat_nls.h"
 #include "exfat_api.h"
 #include "exfat_core.h"
