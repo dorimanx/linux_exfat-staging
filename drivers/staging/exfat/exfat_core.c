@@ -2078,7 +2078,7 @@ s32 load_alloc_bitmap(struct super_block *sb)
 
 				p_fs->map_sectors = ((map_size-1) >> p_bd->sector_size_bits) + 1;
 
-				p_fs->vol_amap = (struct buffer_head **) MALLOC(sizeof(struct buffer_head *) * p_fs->map_sectors);
+				p_fs->vol_amap = (struct buffer_head **) kmalloc(sizeof(struct buffer_head *) * p_fs->map_sectors, GFP_KERNEL);
 				if (p_fs->vol_amap == NULL)
 					return FFS_MEMORYERR;
 
@@ -2241,7 +2241,7 @@ s32 __load_upcase_table(struct super_block *sb, u32 sector, u32 num_sectors, u32
 
 	u32 checksum = 0;
 
-	upcase_table = p_fs->vol_utbl = (u16 **) MALLOC(UTBL_COL_COUNT * sizeof(u16 *));
+	upcase_table = p_fs->vol_utbl = (u16 **) kmalloc(UTBL_COL_COUNT * sizeof(u16 *), GFP_KERNEL);
 	if(upcase_table == NULL)
 		return FFS_MEMORYERR;
 	memset(upcase_table, 0, UTBL_COL_COUNT * sizeof(u16 *));
@@ -2276,7 +2276,7 @@ s32 __load_upcase_table(struct super_block *sb, u32 sector, u32 num_sectors, u32
 
 				if(upcase_table[col_index]== NULL) {
 					PRINTK("alloc = 0x%X\n", col_index);
-					upcase_table[col_index] = (u16 *) MALLOC(UTBL_ROW_COUNT * sizeof(u16));
+					upcase_table[col_index] = (u16 *) kmalloc(UTBL_ROW_COUNT * sizeof(u16), GFP_KERNEL);
 					if(upcase_table[col_index] == NULL) {
 						ret = FFS_MEMORYERR;
 						goto error;
@@ -2315,7 +2315,7 @@ s32 __load_default_upcase_table(struct super_block *sb)
 	u16	uni = 0;
 	u16 **upcase_table;
 
-	upcase_table = p_fs->vol_utbl = (u16 **) MALLOC(UTBL_COL_COUNT * sizeof(u16 *));
+	upcase_table = p_fs->vol_utbl = (u16 **) kmalloc(UTBL_COL_COUNT * sizeof(u16 *), GFP_KERNEL);
 	if(upcase_table == NULL)
 		return FFS_MEMORYERR;
 	memset(upcase_table, 0, UTBL_COL_COUNT * sizeof(u16 *));
@@ -2336,7 +2336,7 @@ s32 __load_default_upcase_table(struct super_block *sb)
 
 			if(upcase_table[col_index]== NULL) {
 				PRINTK("alloc = 0x%X\n", col_index);
-				upcase_table[col_index] = (u16 *) MALLOC(UTBL_ROW_COUNT * sizeof(u16));
+				upcase_table[col_index] = (u16 *) kmalloc(UTBL_ROW_COUNT * sizeof(u16), GFP_KERNEL);
 				if(upcase_table[col_index] == NULL) {
 					ret = FFS_MEMORYERR;
 					goto error;
@@ -3176,8 +3176,8 @@ ENTRY_SET_CACHE_T *get_entry_set_in_dir (struct super_block *sb, CHAIN_T *p_dir,
 	else
 		num_entries = type;
 
-	PRINTK("trying to malloc %lx bytes for %d entries\n", offsetof(ENTRY_SET_CACHE_T, __buf) + (num_entries)  * sizeof(DENTRY_T), num_entries);
-	es = MALLOC(offsetof(ENTRY_SET_CACHE_T, __buf) + (num_entries)  * sizeof(DENTRY_T));
+	PRINTK("trying to kmalloc %lx bytes for %d entries\n", offsetof(ENTRY_SET_CACHE_T, __buf) + (num_entries)  * sizeof(DENTRY_T), num_entries);
+	es = kmalloc(offsetof(ENTRY_SET_CACHE_T, __buf) + (num_entries)  * sizeof(DENTRY_T), GFP_KERNEL);
 	if (es == NULL)
 		goto err_out;
 
@@ -3232,7 +3232,7 @@ ENTRY_SET_CACHE_T *get_entry_set_in_dir (struct super_block *sb, CHAIN_T *p_dir,
 			break;
 		}
 
-		COPY_DENTRY(pos, ep);
+		memcpy(pos, ep, sizeof(DENTRY_T));
 
 		if (--num_entries == 0)
 			break;

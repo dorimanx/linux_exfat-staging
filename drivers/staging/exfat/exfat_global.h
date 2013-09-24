@@ -30,12 +30,9 @@
 extern "C" {
 #endif
 
-#define MALLOC(size)                    kmalloc(size, GFP_KERNEL)
 #define FREE(mem)                       if (mem) kfree(mem)
-#define COPY_DENTRY(dest, src)				memcpy(dest, src, sizeof(DENTRY_T))
 
-
-	s32 __wstrchr(u16 *str, u16 wchar);
+s32 __wstrchr(u16 *str, u16 wchar);
 
 #define WSTRCHR(str, wchar)             __wstrchr(str, wchar)
 

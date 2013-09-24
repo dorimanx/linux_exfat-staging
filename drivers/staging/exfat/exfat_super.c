@@ -514,7 +514,7 @@ static struct dentry *exfat_lookup(struct inode *dir, struct dentry *dentry, uns
 
 	i_mode = inode->i_mode;
 	if (S_ISLNK(i_mode)) {
-		EXFAT_I(inode)->target = MALLOC(i_size_read(inode)+1);
+		EXFAT_I(inode)->target = kmalloc(i_size_read(inode)+1, GFP_KERNEL);
 		if (!EXFAT_I(inode)->target) {
 			err = -ENOMEM;
 			goto error;
@@ -651,7 +651,7 @@ static int exfat_symlink(struct inode *dir, struct dentry *dentry, const char *t
 	inode->i_mtime = inode->i_atime = inode->i_ctime = ts;
 	/* timestamp is already written, so mark_inode_dirty() is unneeded. */
 
-	EXFAT_I(inode)->target = MALLOC(len+1);
+	EXFAT_I(inode)->target = kmalloc(len+1, GFP_KERNEL);
 	if (!EXFAT_I(inode)->target) {
 		err = -ENOMEM;
 		goto out;
