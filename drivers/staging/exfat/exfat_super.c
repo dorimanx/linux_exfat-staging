@@ -418,7 +418,7 @@ static int exfat_create(struct inode *dir, struct dentry *dentry, umode_t mode, 
 
 	__lock_super(sb);
 
-	PRINTK("exfat_create entered\n");
+	DPRINTK("exfat_create entered\n");
 
 	ts = CURRENT_TIME_SEC;
 
@@ -459,7 +459,7 @@ static int exfat_create(struct inode *dir, struct dentry *dentry, umode_t mode, 
 
 out:
 	__unlock_super(sb);
-	PRINTK("exfat_create exited\n");
+	DPRINTK("exfat_create exited\n");
 	return err;
 }
 
@@ -495,7 +495,7 @@ static struct dentry *exfat_lookup(struct inode *dir, struct dentry *dentry, uns
 	mode_t i_mode;
 
 	__lock_super(sb);
-	PRINTK("exfat_lookup entered\n");
+	DPRINTK("exfat_lookup entered\n");
 	err = exfat_find(dir, &dentry->d_name, &fid);
 	if (err) {
 		if (err == -ENOENT) {
@@ -530,7 +530,7 @@ static struct dentry *exfat_lookup(struct inode *dir, struct dentry *dentry, uns
 			d_move(alias, dentry);
 		iput(inode);
 		__unlock_super(sb);
-		PRINTK("exfat_lookup exited 1\n");
+		DPRINTK("exfat_lookup exited 1\n");
 		return alias;
 	} else {
 		dput(alias);
@@ -541,12 +541,12 @@ out:
 	dentry = d_splice_alias(inode, dentry);
 	if (dentry)
 		dentry->d_time = dentry->d_parent->d_inode->i_version;
-	PRINTK("exfat_lookup exited 2\n");
+	DPRINTK("exfat_lookup exited 2\n");
 	return dentry;
 
 error:
 	__unlock_super(sb);
-	PRINTK("exfat_lookup exited 3\n");
+	DPRINTK("exfat_lookup exited 3\n");
 	return ERR_PTR(err);
 }
 
@@ -559,7 +559,7 @@ static int exfat_unlink(struct inode *dir, struct dentry *dentry)
 
 	__lock_super(sb);
 
-	PRINTK("exfat_unlink entered\n");
+	DPRINTK("exfat_unlink entered\n");
 
 	ts = CURRENT_TIME_SEC;
 
@@ -587,7 +587,7 @@ static int exfat_unlink(struct inode *dir, struct dentry *dentry)
 
 out:
 	__unlock_super(sb);
-	PRINTK("exfat_unlink exited\n");
+	DPRINTK("exfat_unlink exited\n");
 	return err;
 }
 
@@ -604,7 +604,7 @@ static int exfat_symlink(struct inode *dir, struct dentry *dentry, const char *t
 
 	__lock_super(sb);
 
-	PRINTK("exfat_symlink entered\n");
+	DPRINTK("exfat_symlink entered\n");
 
 	ts = CURRENT_TIME_SEC;
 
@@ -663,7 +663,7 @@ static int exfat_symlink(struct inode *dir, struct dentry *dentry, const char *t
 
 out:
 	__unlock_super(sb);
-	PRINTK("exfat_symlink exited\n");
+	DPRINTK("exfat_symlink exited\n");
 	return err;
 }
 
@@ -678,7 +678,7 @@ static int exfat_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
 
 	__lock_super(sb);
 
-	PRINTK("exfat_mkdir entered\n");
+	DPRINTK("exfat_mkdir entered\n");
 
 	ts = CURRENT_TIME_SEC;
 
@@ -720,7 +720,7 @@ static int exfat_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
 
 out:
 	__unlock_super(sb);
-	PRINTK("exfat_mkdir exited\n");
+	DPRINTK("exfat_mkdir exited\n");
 	return err;
 }
 
@@ -733,7 +733,7 @@ static int exfat_rmdir(struct inode *dir, struct dentry *dentry)
 
 	__lock_super(sb);
 
-	PRINTK("exfat_rmdir entered\n");
+	DPRINTK("exfat_rmdir entered\n");
 
 	ts = CURRENT_TIME_SEC;
 
@@ -768,7 +768,7 @@ static int exfat_rmdir(struct inode *dir, struct dentry *dentry)
 
 out:
 	__unlock_super(sb);
-	PRINTK("exfat_rmdir exited\n");
+	DPRINTK("exfat_rmdir exited\n");
 	return err;
 }
 
@@ -783,7 +783,7 @@ static int exfat_rename(struct inode *old_dir, struct dentry *old_dentry,
 
 	__lock_super(sb);
 
-	PRINTK("exfat_rename entered\n");
+	DPRINTK("exfat_rename entered\n");
 
 	old_inode = old_dentry->d_inode;
 	new_inode = new_dentry->d_inode;
@@ -847,7 +847,7 @@ static int exfat_rename(struct inode *old_dir, struct dentry *old_dentry,
 
 out:
 	__unlock_super(sb);
-	PRINTK("exfat_rename exited\n");
+	DPRINTK("exfat_rename exited\n");
 	return err;
 }
 
@@ -933,7 +933,7 @@ static int exfat_setattr(struct dentry *dentry, struct iattr *attr)
 	int error;
 	loff_t old_size;
 
-	PRINTK("exfat_setattr entered\n");
+	DPRINTK("exfat_setattr entered\n");
 
 	if ((attr->ia_valid & ATTR_SIZE)
 		&& (attr->ia_size > i_size_read(inode))) {
@@ -986,7 +986,7 @@ static int exfat_setattr(struct dentry *dentry, struct iattr *attr)
 	setattr_copy(inode, attr);
 	mark_inode_dirty(inode);
 
-	PRINTK("exfat_setattr exited\n");
+	DPRINTK("exfat_setattr exited\n");
 	return error;
 }
 
@@ -994,12 +994,12 @@ static int exfat_getattr(struct vfsmount *mnt, struct dentry *dentry, struct kst
 {
 	struct inode *inode = dentry->d_inode;
 
-	PRINTK("exfat_getattr entered\n");
+	DPRINTK("exfat_getattr entered\n");
 
 	generic_fillattr(inode, stat);
 	stat->blksize = EXFAT_SB(inode->i_sb)->fs_info.cluster_size;
 
-	PRINTK("exfat_getattr exited\n");
+	DPRINTK("exfat_getattr exited\n");
 	return 0;
 }
 

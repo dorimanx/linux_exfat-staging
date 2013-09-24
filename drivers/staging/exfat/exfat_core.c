@@ -339,7 +339,7 @@ s32 ffsLookupFile(struct inode *inode, char *path, FILE_ID_T *fid)
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	PRINTK("ffsLookupFile entered\n");
+	DPRINTK("ffsLookupFile entered\n");
 
 	ret = resolve_path(inode, path, &dir, &uni_name);
 	if (ret)
@@ -401,7 +401,7 @@ s32 ffsLookupFile(struct inode *inode, char *path, FILE_ID_T *fid)
 	if (p_fs->dev_ejected)
 		return FFS_MEDIAERR;
 
-	PRINTK("ffsLookupFile exited successfully\n");
+	DPRINTK("ffsLookupFile exited successfully\n");
 
 	return FFS_SUCCESS;
 }
@@ -1072,7 +1072,7 @@ s32 ffsGetStat(struct inode *inode, DIR_ENTRY_T *info)
 	ENTRY_SET_CACHE_T *es=NULL;
 	u8 is_dir = (fid->type == TYPE_DIR) ? 1 : 0;
 
-	PRINTK("ffsGetStat entered\n");
+	DPRINTK("ffsGetStat entered\n");
 
 	if (is_dir) {
 		if ((fid->dir.dir == p_fs->root_dir) &&
@@ -1174,7 +1174,7 @@ s32 ffsGetStat(struct inode *inode, DIR_ENTRY_T *info)
 	if (p_fs->dev_ejected)
 		return FFS_MEDIAERR;
 
-	PRINTK("ffsGetStat exited successfully\n");
+	DPRINTK("ffsGetStat exited successfully\n");
 	return FFS_SUCCESS;
 }
 
@@ -1369,7 +1369,7 @@ s32 ffsCreateDir(struct inode *inode, char *path, FILE_ID_T *fid)
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	PRINTK("ffsCreateDir entered\n");
+	DPRINTK("ffsCreateDir entered\n");
 
 	ret = resolve_path(inode, path, &dir, &uni_name);
 	if (ret)
@@ -2253,7 +2253,7 @@ s32 __load_upcase_table(struct super_block *sb, u32 sector, u32 num_sectors, u32
 	while(sector < num_sectors) {
 		ret = sector_read(sb, sector, &tmp_bh, 1);
 		if (ret != FFS_SUCCESS) {
-			PRINTK("sector read (0x%X)fail\n", sector);
+			DPRINTK("sector read (0x%X)fail\n", sector);
 			goto error;
 		}
 		sector++;
@@ -2265,9 +2265,9 @@ s32 __load_upcase_table(struct super_block *sb, u32 sector, u32 num_sectors, u32
 			checksum = ((checksum & 1) ? 0x80000000 : 0 ) + (checksum >> 1) + *(((u8 *) tmp_bh->b_data)+(i+1));
 
 			if(skip) {
-				PRINTK("skip from 0x%X ", index);
+				DPRINTK("skip from 0x%X ", index);
 				index += uni;
-				PRINTK("to 0x%X (amount of 0x%X)\n", index, uni);
+				DPRINTK("to 0x%X (amount of 0x%X)\n", index, uni);
 				skip = FALSE;
 			} else if(uni == index)
 				index++;
@@ -2277,7 +2277,7 @@ s32 __load_upcase_table(struct super_block *sb, u32 sector, u32 num_sectors, u32
 				u16 col_index = get_col_index(index);
 
 				if(upcase_table[col_index]== NULL) {
-					PRINTK("alloc = 0x%X\n", col_index);
+					DPRINTK("alloc = 0x%X\n", col_index);
 					upcase_table[col_index] = (u16 *) kmalloc(UTBL_ROW_COUNT * sizeof(u16), GFP_KERNEL);
 					if(upcase_table[col_index] == NULL) {
 						ret = FFS_MEMORYERR;
@@ -2325,9 +2325,9 @@ s32 __load_default_upcase_table(struct super_block *sb)
 	for(i = 0; index <= 0xFFFF && i < NUM_UPCASE*2; i += 2) {
 		uni = GET16(uni_upcase + i);
 		if(skip) {
-			PRINTK("skip from 0x%X ", index);
+			DPRINTK("skip from 0x%X ", index);
 			index += uni;
-			PRINTK("to 0x%X (amount of 0x%X)\n", index, uni);
+			DPRINTK("to 0x%X (amount of 0x%X)\n", index, uni);
 			skip = FALSE;
 		} else if(uni == index)
 			index++;
@@ -2337,7 +2337,7 @@ s32 __load_default_upcase_table(struct super_block *sb)
 			u16 col_index = get_col_index(index);
 
 			if(upcase_table[col_index]== NULL) {
-				PRINTK("alloc = 0x%X\n", col_index);
+				DPRINTK("alloc = 0x%X\n", col_index);
 				upcase_table[col_index] = (u16 *) kmalloc(UTBL_ROW_COUNT * sizeof(u16), GFP_KERNEL);
 				if(upcase_table[col_index] == NULL) {
 					ret = FFS_MEMORYERR;
@@ -3038,7 +3038,7 @@ void update_dir_checksum_with_entry_set (struct super_block *sb, ENTRY_SET_CACHE
 
 	ep = (DENTRY_T *)&(es->__buf);
 	for (i=0; i < es->num_entries; i++) {
-		PRINTK ("update_dir_checksum_with_entry_set ep %p\n", ep);
+		DPRINTK ("update_dir_checksum_with_entry_set ep %p\n", ep);
 		chksum = calc_checksum_2byte((void *) ep, DENTRY_SIZE, chksum, chksum_type);
 		ep++;
 		chksum_type = CS_DEFAULT;
@@ -3148,8 +3148,8 @@ ENTRY_SET_CACHE_T *get_entry_set_in_dir (struct super_block *sb, CHAIN_T *p_dir,
 	u8 num_entries;
 	s32 mode = ES_MODE_STARTED;
 
-	PRINTK("get_entry_set_in_dir entered\n");
-	PRINTK("p_dir dir %u flags %x size %d\n", p_dir->dir, p_dir->flags, p_dir->size);
+	DPRINTK("get_entry_set_in_dir entered\n");
+	DPRINTK("p_dir dir %u flags %x size %d\n", p_dir->dir, p_dir->flags, p_dir->size);
 
 	byte_offset = entry << DENTRY_SIZE_BITS;
 	ret =_walk_fat_chain(sb, p_dir, byte_offset, &clu);
@@ -3180,7 +3180,7 @@ ENTRY_SET_CACHE_T *get_entry_set_in_dir (struct super_block *sb, CHAIN_T *p_dir,
 	else
 		num_entries = type;
 
-	PRINTK("trying to kmalloc %lx bytes for %d entries\n", offsetof(ENTRY_SET_CACHE_T, __buf) + (num_entries)  * sizeof(DENTRY_T), num_entries);
+	DPRINTK("trying to kmalloc %lx bytes for %d entries\n", offsetof(ENTRY_SET_CACHE_T, __buf) + (num_entries)  * sizeof(DENTRY_T), num_entries);
 	es = kmalloc(offsetof(ENTRY_SET_CACHE_T, __buf) + (num_entries)  * sizeof(DENTRY_T), GFP_KERNEL);
 	if (es == NULL)
 		goto err_out;
@@ -3268,12 +3268,12 @@ ENTRY_SET_CACHE_T *get_entry_set_in_dir (struct super_block *sb, CHAIN_T *p_dir,
 	if (file_ep)
 		*file_ep = (DENTRY_T *)&(es->__buf);
 
-	PRINTK("es sec %u offset %d flags %d, num_entries %u buf ptr %p\n",
+	DPRINTK("es sec %u offset %d flags %d, num_entries %u buf ptr %p\n",
 		   es->sector, es->offset, es->alloc_flag, es->num_entries, &(es->__buf));
-	PRINTK("get_entry_set_in_dir exited %p\n", es);
+	DPRINTK("get_entry_set_in_dir exited %p\n", es);
 	return es;
 err_out:
-	PRINTK("get_entry_set_in_dir exited NULL (es %p)\n", es);
+	DPRINTK("get_entry_set_in_dir exited NULL (es %p)\n", es);
 	if (es)
 		kfree(es);
 	return NULL;
@@ -3281,7 +3281,7 @@ err_out:
 
 void release_entry_set (ENTRY_SET_CACHE_T *es)
 {
-	PRINTK("release_entry_set %p\n", es);
+	DPRINTK("release_entry_set %p\n", es);
 	if(es)
 		kfree(es);
 }
@@ -3296,8 +3296,8 @@ static s32 __write_partial_entries_in_entry_set (struct super_block *sb, ENTRY_S
 	u32 clu;
 	u8 *buf, *esbuf = (u8 *)&(es->__buf);
 
-	PRINTK("__write_partial_entries_in_entry_set entered\n");
-	PRINTK("es %p sec %u off %d count %d\n", es, sec, off, count);
+	DPRINTK("__write_partial_entries_in_entry_set entered\n");
+	DPRINTK("es %p sec %u off %d count %d\n", es, sec, off, count);
 	num_entries = count;
 
 	while(num_entries) {
@@ -3306,8 +3306,8 @@ static s32 __write_partial_entries_in_entry_set (struct super_block *sb, ENTRY_S
 		buf = buf_getblk(sb, sec);
 		if (buf == NULL)
 			goto err_out;
-		PRINTK("es->buf %p buf_off %u\n", esbuf, buf_off);
-		PRINTK("copying %d entries from %p to sector %u\n", copy_entries, (esbuf + buf_off), sec);
+		DPRINTK("es->buf %p buf_off %u\n", esbuf, buf_off);
+		DPRINTK("copying %d entries from %p to sector %u\n", copy_entries, (esbuf + buf_off), sec);
 		memcpy(buf + off, esbuf + buf_off, copy_entries << DENTRY_SIZE_BITS);
 		buf_modify(sb, sec);
 		num_entries -= copy_entries;
@@ -3330,10 +3330,10 @@ static s32 __write_partial_entries_in_entry_set (struct super_block *sb, ENTRY_S
 		}
 	}
 
-	PRINTK("__write_partial_entries_in_entry_set exited successfully\n");
+	DPRINTK("__write_partial_entries_in_entry_set exited successfully\n");
 	return FFS_SUCCESS;
 err_out:
-	PRINTK("__write_partial_entries_in_entry_set failed\n");
+	DPRINTK("__write_partial_entries_in_entry_set failed\n");
 	return FFS_ERROR;
 }
 

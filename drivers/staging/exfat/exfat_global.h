@@ -30,12 +30,12 @@ extern "C" {
 #endif
 
 #ifdef CONFIG_EXFAT_DEBUG_MSG
-#define PRINTK(...)			\
+#define DPRINTK(...)			\
 	do {								\
 		printk("[EXFAT] " __VA_ARGS__);	\
 	} while(0)
 #else
-#define PRINTK(...)
+#define DPRINTK(...)
 #endif
 
 	void    Bitmap_set_all(u8 *bitmap, s32 mapsize);

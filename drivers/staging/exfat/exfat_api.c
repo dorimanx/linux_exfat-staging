@@ -230,11 +230,11 @@ s32 FsTruncateFile(struct inode *inode, u64 old_size, u64 new_size)
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
-	PRINTK("FsTruncateFile entered (inode %p size %llu)\n", inode, new_size);
+	DPRINTK("FsTruncateFile entered (inode %p size %llu)\n", inode, new_size);
 
 	err = ffsTruncateFile(inode, old_size, new_size);
 
-	PRINTK("FsTruncateFile exitted (%d)\n", err);
+	DPRINTK("FsTruncateFile exitted (%d)\n", err);
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
@@ -313,13 +313,13 @@ s32 FsWriteStat(struct inode *inode, DIR_ENTRY_T *info)
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
-	PRINTK("FsWriteStat entered (inode %p info %p\n", inode, info);
+	DPRINTK("FsWriteStat entered (inode %p info %p\n", inode, info);
 
 	err = ffsSetStat(inode, info);
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	PRINTK("FsWriteStat exited (%d)\n", err);
+	DPRINTK("FsWriteStat exited (%d)\n", err);
 
 	return err;
 }
