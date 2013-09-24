@@ -22,8 +22,4 @@ config EXFAT_DEBUG_MSG
 	bool "print debug messages"
 	default n
 
-config EXFAT_ELAPSED_TIME
-	bool "track elapsed time"
-	default n
-
 endif # EXFAT_FS

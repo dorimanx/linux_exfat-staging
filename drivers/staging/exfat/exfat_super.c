@@ -91,25 +91,6 @@ extern struct timezone sys_tz;
 
 #define CHECK_ERR(x)	BUG_ON(x)
 
-#ifdef CONFIG_EXFAT_ELAPSED_TIME
-#include <linux/time.h>
-
-static u32 __t1, __t2;
-static u32 get_current_msec(void)
-{
-	struct timeval tm;
-	do_gettimeofday(&tm);
-	return (u32)(tm.tv_sec*1000000 + tm.tv_usec);
-}
-#define TIME_START()        do {__t1 = get_current_msec();} while (0)
-#define TIME_END()          do {__t2 = get_current_msec();} while (0)
-#define PRINT_TIME(n)       do {printk("[EXFAT] Elapsed time %d = %d (usec)\n", n, (__t2 - __t1));} while (0)
-#else
-#define TIME_START()
-#define TIME_END()
-#define PRINT_TIME(n)
-#endif
-
 #define UNIX_SECS_1980    315532800L
 
 #if BITS_PER_LONG == 64

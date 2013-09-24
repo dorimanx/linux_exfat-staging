@@ -41,26 +41,6 @@
 
 #include <linux/blkdev.h>
 
-
-#ifdef CONFIG_EXFAT_ELAPSED_TIME
-#include <linux/time.h>
-
-static u32 __t1, __t2;
-static u32 get_current_msec(void)
-{
-	struct timeval tm;
-	do_gettimeofday(&tm);
-	return (u32)(tm.tv_sec*1000000 + tm.tv_usec);
-}
-#define TIME_START()        do {__t1 = get_current_msec(); } while (0)
-#define TIME_END()          do {__t2 = get_current_msec(); } while (0)
-#define PRINT_TIME(n)       do {printk("[EXFAT] Elapsed time %d = %d (usec)\n", n, (__t2 - __t1)); } while (0)
-#else
-#define TIME_START()
-#define TIME_END()
-#define PRINT_TIME(n)
-#endif
-
 static void __set_sb_dirty(struct super_block *sb)
 {
 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
