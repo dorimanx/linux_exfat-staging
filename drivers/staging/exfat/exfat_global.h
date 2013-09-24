@@ -25,7 +25,6 @@
 #include <linux/string.h>
 #include <linux/fs.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,11 +52,6 @@ s32 __wstrchr(u16 *str, u16 wchar);
 
 	void    my_itoa(char *buf, s32 v);
 
-#ifdef PRINT
-#undef PRINT
-#endif
-
-#define PRINT                   printk
 #ifdef __cplusplus
 }
 #endif

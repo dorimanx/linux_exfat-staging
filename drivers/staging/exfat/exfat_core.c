@@ -4862,7 +4862,7 @@ s32 sector_read(struct super_block *sb, u32 sec, struct buffer_head **bh, s32 re
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	if ((sec >= (p_fs->PBR_sector+p_fs->num_sectors)) && (p_fs->num_sectors > 0)) {
-		PRINT("[EXFAT] sector_read: out of range error! (sec = %d)\n", sec);
+		printk("[EXFAT] sector_read: out of range error! (sec = %d)\n", sec);
 		fs_error(sb);
 		return ret;
 	}
@@ -4882,13 +4882,13 @@ s32 sector_write(struct super_block *sb, u32 sec, struct buffer_head *bh, s32 sy
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	if (sec >= (p_fs->PBR_sector+p_fs->num_sectors) && (p_fs->num_sectors > 0)) {
-		PRINT("[EXFAT] sector_write: out of range error! (sec = %d)\n", sec);
+		printk("[EXFAT] sector_write: out of range error! (sec = %d)\n", sec);
 		fs_error(sb);
 		return ret;
 	}
 
 	if (bh == NULL) {
-		PRINT("[EXFAT] sector_write: bh is NULL!\n");
+		printk("[EXFAT] sector_write: bh is NULL!\n");
 		fs_error(sb);
 		return ret;
 	}
@@ -4908,7 +4908,7 @@ s32 multi_sector_read(struct super_block *sb, u32 sec, struct buffer_head **bh, 
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	if (((sec+num_secs) > (p_fs->PBR_sector+p_fs->num_sectors)) && (p_fs->num_sectors > 0)) {
-		PRINT("[EXFAT] multi_sector_read: out of range error! (sec = %d, num_secs = %d)\n", sec, num_secs);
+		printk("[EXFAT] multi_sector_read: out of range error! (sec = %d, num_secs = %d)\n", sec, num_secs);
 		fs_error(sb);
 		return ret;
 	}
@@ -4928,12 +4928,12 @@ s32 multi_sector_write(struct super_block *sb, u32 sec, struct buffer_head *bh, 
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	if ((sec+num_secs) > (p_fs->PBR_sector+p_fs->num_sectors) && (p_fs->num_sectors > 0)) {
-		PRINT("[EXFAT] multi_sector_write: out of range error! (sec = %d, num_secs = %d)\n", sec, num_secs);
+		printk("[EXFAT] multi_sector_write: out of range error! (sec = %d, num_secs = %d)\n", sec, num_secs);
 		fs_error(sb);
 		return ret;
 	}
 	if (bh == NULL) {
-		PRINT("[EXFAT] multi_sector_write: bh is NULL!\n");
+		printk("[EXFAT] multi_sector_write: bh is NULL!\n");
 		fs_error(sb);
 		return ret;
 	}
