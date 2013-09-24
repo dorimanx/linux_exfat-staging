@@ -91,9 +91,8 @@ static char exfat_default_iocharset[] = DEFAULT_IOCHARSET;
 extern struct timezone sys_tz;
 
 #define CHECK_ERR(x)	BUG_ON(x)
-#define ELAPSED_TIME        0
 
-#if (ELAPSED_TIME == 1)
+#ifdef CONFIG_EXFAT_ELAPSED_TIME
 #include <linux/time.h>
 
 static u32 __t1, __t2;

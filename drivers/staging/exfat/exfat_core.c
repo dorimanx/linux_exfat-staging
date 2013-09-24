@@ -41,17 +41,11 @@
 
 #include <linux/blkdev.h>
 
-#define THERE_IS_MBR        0
-
-#if (THERE_IS_MBR == 1)
+#ifdef CONFIG_EXFAT_THERE_IS_MBR
 #include "exfat_part.h"
 #endif
 
-#define DELAYED_SYNC        0
-
-#define ELAPSED_TIME        0
-
-#if (ELAPSED_TIME == 1)
+#ifdef CONFIG_EXFAT_ELAPSED_TIME
 #include <linux/time.h>
 
 static u32 __t1, __t2;
@@ -153,7 +147,7 @@ s32 ffsShutdown(void)
 s32 ffsMountVol(struct super_block *sb, s32 drv)
 {
 	s32 i, ret;
-#if (THERE_IS_MBR == 1)
+#ifdef CONFIG_EXFAT_THERE_IS_MBR
 	MBR_SECTOR_T *p_mbr;
 	PART_ENTRY_T *p_pte;
 #endif
@@ -178,7 +172,7 @@ s32 ffsMountVol(struct super_block *sb, s32 drv)
 	if (sector_read(sb, 0, &tmp_bh, 1) != FFS_SUCCESS)
 		return FFS_MEDIAERR;
 
-#if (THERE_IS_MBR == 1)
+#ifdef CONFIG_EXFAT_THERE_IS_MBR
 	if (buf[0] != 0xEB) {
 		p_mbr = (MBR_SECTOR_T *) tmp_bh->b_data;
 
@@ -205,7 +199,7 @@ s32 ffsMountVol(struct super_block *sb, s32 drv)
 	} else {
 #endif
 		p_fs->PBR_sector = 0;
-#if (THERE_IS_MBR == 1)
+#ifdef CONFIG_EXFAT_THERE_IS_MBR
 	}
 #endif
 
@@ -420,7 +414,7 @@ s32 ffsCreateFile(struct inode *inode, char *path, u8 mode, FILE_ID_T *fid)
 	fs_set_vol_flags(sb, VOL_DIRTY);
 	ret = create_file(inode, &dir, &uni_name, mode, fid);
 
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif
@@ -699,7 +693,7 @@ s32 ffsWriteFile(struct inode *inode, FILE_ID_T *fid, void *buffer, u64 count, u
 		release_entry_set(es);
 	}
 
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif
@@ -811,7 +805,7 @@ s32 ffsTruncateFile(struct inode *inode, u64 old_size, u64 new_size)
 		fid->rwoffset = fid->size;
 	}
 
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif
@@ -926,7 +920,7 @@ s32 ffsMoveFile(struct inode *old_parent_inode, FILE_ID_T *fid, struct inode *ne
 		p_fs->fs_func->delete_dir_entry(sb, p_dir, new_entry, 0, num_entries+1);
 	}
 out:
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif
@@ -973,7 +967,7 @@ s32 ffsRemoveFile(struct inode *inode, FILE_ID_T *fid)
 	fid->start_clu = CLUSTER_32(~0);
 	fid->flags = (p_fs->vol_type == EXFAT)? 0x03: 0x01;
 
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif
@@ -1046,7 +1040,7 @@ s32 ffsSetAttr(struct inode *inode, u32 attr)
 		release_entry_set(es);
 	}
 
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif
@@ -1378,7 +1372,7 @@ s32 ffsCreateDir(struct inode *inode, char *path, FILE_ID_T *fid)
 
 	ret = create_dir(inode, &dir, &uni_name, fid);
 
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif
@@ -1590,7 +1584,7 @@ s32 ffsRemoveDir(struct inode *inode, FILE_ID_T *fid)
 	fid->start_clu = CLUSTER_32(~0);
 	fid->flags = (p_fs->vol_type == EXFAT)? 0x03: 0x01;
 
-#if (DELAYED_SYNC == 0)
+#ifdef CONFIG_EXFAT_DELAYED_SYNC
 	fs_sync(sb, 0);
 	fs_set_vol_flags(sb, VOL_CLEAN);
 #endif

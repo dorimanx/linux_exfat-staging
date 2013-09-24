@@ -10,12 +10,24 @@ config EXFAT_DISCARD
 	bool "enable discard support"
 	default y
 
+config EXFAT_THERE_IS_MBR
+	bool "if there is no MBR (e.g. memory card)"
+	default n
+
+config EXFAT_DELAYED_SYNC
+	bool "enable delayed sync"
+	default n
+
 config EXFAT_KERNEL_DEBUG
 	bool "enable kernel debug features via ioctl"
 	default y
 
 config EXFAT_DEBUG_MSG
 	bool "print debug messages"
+	default n
+
+config EXFAT_ELAPSED_TIME
+	bool "track elapsed time"
 	default n
 
 endif # EXFAT_FS
