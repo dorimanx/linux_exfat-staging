@@ -46,7 +46,7 @@ s32 FsInit(void)
 		sm_init(&(fs_struct[i].v_sem));
 	}
 
-	return(ffsInit());
+	return ffsInit();
 }
 
 s32 FsShutdown(void)
@@ -60,7 +60,7 @@ s32 FsShutdown(void)
 		ffsUmountVol(fs_struct[i].sb);
 	}
 
-	return(ffsShutdown());
+	return ffsShutdown();
 }
 
 s32 FsMountVol(struct super_block *sb)
@@ -73,7 +73,7 @@ s32 FsMountVol(struct super_block *sb)
 		if (!fs_struct[drv].mounted) break;
 	}
 
-	if (drv >= MAX_DRIVE) return(FFS_ERROR);
+	if (drv >= MAX_DRIVE) return FFS_ERROR;
 
 	sm_P(&(fs_struct[drv].v_sem));
 
@@ -93,7 +93,7 @@ s32 FsMountVol(struct super_block *sb)
 
 	sm_V(&z_sem);
 
-	return(err);
+	return err;
 }
 
 s32 FsUmountVol(struct super_block *sb)
@@ -115,7 +115,7 @@ s32 FsUmountVol(struct super_block *sb)
 
 	sm_V(&z_sem);
 
-	return(err);
+	return err;
 }
 
 s32 FsGetVolInfo(struct super_block *sb, VOL_INFO_T *info)
@@ -123,7 +123,7 @@ s32 FsGetVolInfo(struct super_block *sb, VOL_INFO_T *info)
 	s32 err;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (info == NULL) return(FFS_ERROR);
+	if (info == NULL) return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -131,7 +131,7 @@ s32 FsGetVolInfo(struct super_block *sb, VOL_INFO_T *info)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsSyncVol(struct super_block *sb, s32 do_sync)
@@ -145,7 +145,7 @@ s32 FsSyncVol(struct super_block *sb, s32 do_sync)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsLookupFile(struct inode *inode, char *path, FILE_ID_T *fid)
@@ -155,7 +155,7 @@ s32 FsLookupFile(struct inode *inode, char *path, FILE_ID_T *fid)
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	if ((fid == NULL) || (path == NULL) || (*path == '\0'))
-		return(FFS_ERROR);
+		return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -163,7 +163,7 @@ s32 FsLookupFile(struct inode *inode, char *path, FILE_ID_T *fid)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsCreateFile(struct inode *inode, char *path, u8 mode, FILE_ID_T *fid)
@@ -173,7 +173,7 @@ s32 FsCreateFile(struct inode *inode, char *path, u8 mode, FILE_ID_T *fid)
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	if ((fid == NULL) || (path == NULL) || (*path == '\0'))
-		return(FFS_ERROR);
+		return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -181,7 +181,7 @@ s32 FsCreateFile(struct inode *inode, char *path, u8 mode, FILE_ID_T *fid)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsReadFile(struct inode *inode, FILE_ID_T *fid, void *buffer, u64 count, u64 *rcount)
@@ -190,9 +190,9 @@ s32 FsReadFile(struct inode *inode, FILE_ID_T *fid, void *buffer, u64 count, u64
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (fid == NULL) return(FFS_INVALIDFID);
+	if (fid == NULL) return FFS_INVALIDFID;
 
-	if (buffer == NULL) return(FFS_ERROR);
+	if (buffer == NULL) return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -200,7 +200,7 @@ s32 FsReadFile(struct inode *inode, FILE_ID_T *fid, void *buffer, u64 count, u64
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsWriteFile(struct inode *inode, FILE_ID_T *fid, void *buffer, u64 count, u64 *wcount)
@@ -209,9 +209,9 @@ s32 FsWriteFile(struct inode *inode, FILE_ID_T *fid, void *buffer, u64 count, u6
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (fid == NULL) return(FFS_INVALIDFID);
+	if (fid == NULL) return FFS_INVALIDFID;
 
-	if (buffer == NULL) return(FFS_ERROR);
+	if (buffer == NULL) return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -219,7 +219,7 @@ s32 FsWriteFile(struct inode *inode, FILE_ID_T *fid, void *buffer, u64 count, u6
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsTruncateFile(struct inode *inode, u64 old_size, u64 new_size)
@@ -238,7 +238,7 @@ s32 FsTruncateFile(struct inode *inode, u64 old_size, u64 new_size)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsMoveFile(struct inode *old_parent_inode, FILE_ID_T *fid, struct inode *new_parent_inode, struct dentry *new_dentry)
@@ -247,7 +247,7 @@ s32 FsMoveFile(struct inode *old_parent_inode, FILE_ID_T *fid, struct inode *new
 	struct super_block *sb = old_parent_inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (fid == NULL) return(FFS_INVALIDFID);
+	if (fid == NULL) return FFS_INVALIDFID;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -255,7 +255,7 @@ s32 FsMoveFile(struct inode *old_parent_inode, FILE_ID_T *fid, struct inode *new
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsRemoveFile(struct inode *inode, FILE_ID_T *fid)
@@ -264,7 +264,7 @@ s32 FsRemoveFile(struct inode *inode, FILE_ID_T *fid)
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (fid == NULL) return(FFS_INVALIDFID);
+	if (fid == NULL) return FFS_INVALIDFID;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -272,7 +272,7 @@ s32 FsRemoveFile(struct inode *inode, FILE_ID_T *fid)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsSetAttr(struct inode *inode, u32 attr)
@@ -287,7 +287,7 @@ s32 FsSetAttr(struct inode *inode, u32 attr)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsReadStat(struct inode *inode, DIR_ENTRY_T *info)
@@ -302,7 +302,7 @@ s32 FsReadStat(struct inode *inode, DIR_ENTRY_T *info)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsWriteStat(struct inode *inode, DIR_ENTRY_T *info)
@@ -321,7 +321,7 @@ s32 FsWriteStat(struct inode *inode, DIR_ENTRY_T *info)
 
 	PRINTK("FsWriteStat exited (%d)\n", err);
 
-	return(err);
+	return err;
 }
 
 s32 FsMapCluster(struct inode *inode, s32 clu_offset, u32 *clu)
@@ -330,7 +330,7 @@ s32 FsMapCluster(struct inode *inode, s32 clu_offset, u32 *clu)
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (clu == NULL) return(FFS_ERROR);
+	if (clu == NULL) return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -338,7 +338,7 @@ s32 FsMapCluster(struct inode *inode, s32 clu_offset, u32 *clu)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsCreateDir(struct inode *inode, char *path, FILE_ID_T *fid)
@@ -348,7 +348,7 @@ s32 FsCreateDir(struct inode *inode, char *path, FILE_ID_T *fid)
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	if ((fid == NULL) || (path == NULL) || (*path == '\0'))
-		return(FFS_ERROR);
+		return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -356,7 +356,7 @@ s32 FsCreateDir(struct inode *inode, char *path, FILE_ID_T *fid)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsReadDir(struct inode *inode, DIR_ENTRY_T *dir_entry)
@@ -365,7 +365,7 @@ s32 FsReadDir(struct inode *inode, DIR_ENTRY_T *dir_entry)
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (dir_entry == NULL) return(FFS_ERROR);
+	if (dir_entry == NULL) return FFS_ERROR;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -373,7 +373,7 @@ s32 FsReadDir(struct inode *inode, DIR_ENTRY_T *dir_entry)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 s32 FsRemoveDir(struct inode *inode, FILE_ID_T *fid)
@@ -382,7 +382,7 @@ s32 FsRemoveDir(struct inode *inode, FILE_ID_T *fid)
 	struct super_block *sb = inode->i_sb;
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
-	if (fid == NULL) return(FFS_INVALIDFID);
+	if (fid == NULL) return FFS_INVALIDFID;
 
 	sm_P(&(fs_struct[p_fs->drv].v_sem));
 
@@ -390,7 +390,7 @@ s32 FsRemoveDir(struct inode *inode, FILE_ID_T *fid)
 
 	sm_V(&(fs_struct[p_fs->drv].v_sem));
 
-	return(err);
+	return err;
 }
 
 EXPORT_SYMBOL(FsMountVol);

@@ -98,12 +98,12 @@ s32 buf_init(struct super_block *sb)
 		buf_cache_insert_hash(sb, &(p_fs->buf_cache_array[i]));
 	}
 
-	return(FFS_SUCCESS);
+	return FFS_SUCCESS;
 }
 
 s32 buf_shutdown(struct super_block *sb)
 {
-	return(FFS_SUCCESS);
+	return FFS_SUCCESS;
 }
 
 s32 FAT_read(struct super_block *sb, u32 loc, u32 *content)
@@ -116,7 +116,7 @@ s32 FAT_read(struct super_block *sb, u32 loc, u32 *content)
 
 	sm_V(&f_sem);
 
-	return(ret);
+	return ret;
 }
 
 s32 FAT_write(struct super_block *sb, u32 loc, u32 content)
@@ -129,7 +129,7 @@ s32 FAT_write(struct super_block *sb, u32 loc, u32 content)
 
 	sm_V(&f_sem);
 
-	return(ret);
+	return ret;
 }
 
 static s32 __FAT_read(struct super_block *sb, u32 loc, u32 *content)
@@ -359,7 +359,7 @@ u8 *FAT_getblk(struct super_block *sb, u32 sec)
 	bp = FAT_cache_find(sb, sec);
 	if (bp != NULL) {
 		move_to_mru(bp, &p_fs->FAT_cache_lru_list);
-		return(bp->buf_bh->b_data);
+		return bp->buf_bh->b_data;
 	}
 
 	bp = FAT_cache_get(sb, sec);
@@ -383,7 +383,7 @@ u8 *FAT_getblk(struct super_block *sb, u32 sec)
 		return NULL;
 	}
 
-	return(bp->buf_bh->b_data);
+	return bp->buf_bh->b_data;
 }
 
 void FAT_modify(struct super_block *sb, u32 sec)
@@ -456,10 +456,10 @@ static BUF_CACHE_T *FAT_cache_find(struct super_block *sb, u32 sec)
 					  "It will make system panic.\n");
 
 			touch_buffer(bp->buf_bh);
-			return(bp);
+			return bp;
 		}
 	}
-	return(NULL);
+	return NULL;
 }
 
 static BUF_CACHE_T *FAT_cache_get(struct super_block *sb, u32 sec)
@@ -471,7 +471,7 @@ static BUF_CACHE_T *FAT_cache_get(struct super_block *sb, u32 sec)
 
 
 	move_to_mru(bp, &p_fs->FAT_cache_lru_list);
-	return(bp);
+	return bp;
 }
 
 static void FAT_cache_insert_hash(struct super_block *sb, BUF_CACHE_T *bp)
@@ -506,7 +506,7 @@ u8 *buf_getblk(struct super_block *sb, u32 sec)
 
 	sm_V(&b_sem);
 
-	return(buf);
+	return buf;
 }
 
 static u8 *__buf_getblk(struct super_block *sb, u32 sec)
@@ -517,7 +517,7 @@ static u8 *__buf_getblk(struct super_block *sb, u32 sec)
 	bp = buf_cache_find(sb, sec);
 	if (bp != NULL) {
 		move_to_mru(bp, &p_fs->buf_cache_lru_list);
-		return(bp->buf_bh->b_data);
+		return bp->buf_bh->b_data;
 	}
 
 	bp = buf_cache_get(sb, sec);
@@ -541,7 +541,7 @@ static u8 *__buf_getblk(struct super_block *sb, u32 sec)
 		return NULL;
 	}
 
-	return(bp->buf_bh->b_data);
+	return bp->buf_bh->b_data;
 
 }
 
@@ -669,10 +669,10 @@ static BUF_CACHE_T *buf_cache_find(struct super_block *sb, u32 sec)
 	for (bp = hp->hash_next; bp != hp; bp = bp->hash_next) {
 		if ((bp->drv == p_fs->drv) && (bp->sec == sec)) {
 			touch_buffer(bp->buf_bh);
-			return(bp);
+			return bp;
 		}
 	}
-	return(NULL);
+	return NULL;
 }
 
 static BUF_CACHE_T *buf_cache_get(struct super_block *sb, u32 sec)
@@ -685,7 +685,7 @@ static BUF_CACHE_T *buf_cache_get(struct super_block *sb, u32 sec)
 
 
 	move_to_mru(bp, &p_fs->buf_cache_lru_list);
-	return(bp);
+	return bp;
 }
 
 static void buf_cache_insert_hash(struct super_block *sb, BUF_CACHE_T *bp)

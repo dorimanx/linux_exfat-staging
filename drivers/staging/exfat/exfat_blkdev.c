@@ -27,19 +27,19 @@
 
 s32 bdev_init(void)
 {
-	return(FFS_SUCCESS);
+	return FFS_SUCCESS;
 }
 
 s32 bdev_shutdown(void)
 {
-	return(FFS_SUCCESS);
+	return FFS_SUCCESS;
 }
 
 s32 bdev_open(struct super_block *sb)
 {
 	BD_INFO_T *p_bd = &(EXFAT_SB(sb)->bd_info);
 
-	if (p_bd->opened) return(FFS_SUCCESS);
+	if (p_bd->opened) return FFS_SUCCESS;
 
 	p_bd->sector_size      = bdev_logical_block_size(sb->s_bdev);
 	p_bd->sector_size_bits = ilog2(p_bd->sector_size);
@@ -48,17 +48,17 @@ s32 bdev_open(struct super_block *sb)
 
 	p_bd->opened = TRUE;
 
-	return(FFS_SUCCESS);
+	return FFS_SUCCESS;
 }
 
 s32 bdev_close(struct super_block *sb)
 {
 	BD_INFO_T *p_bd = &(EXFAT_SB(sb)->bd_info);
 
-	if (!p_bd->opened) return(FFS_SUCCESS);
+	if (!p_bd->opened) return FFS_SUCCESS;
 
 	p_bd->opened = FALSE;
-	return(FFS_SUCCESS);
+	return FFS_SUCCESS;
 }
 
 s32 bdev_read(struct super_block *sb, u32 secno, struct buffer_head **bh, u32 num_secs, s32 read)
@@ -72,7 +72,7 @@ s32 bdev_read(struct super_block *sb, u32 secno, struct buffer_head **bh, u32 nu
 	if (flags & EXFAT_DEBUGFLAGS_ERROR_RW)	return (FFS_MEDIAERR);
 #endif
 
-	if (!p_bd->opened) return(FFS_MEDIAERR);
+	if (!p_bd->opened) return FFS_MEDIAERR;
 
 	if (*bh) __brelse(*bh);
 
@@ -81,12 +81,12 @@ s32 bdev_read(struct super_block *sb, u32 secno, struct buffer_head **bh, u32 nu
 	else
 		*bh = __getblk(sb->s_bdev, secno, num_secs << p_bd->sector_size_bits);
 
-	if (*bh) return(FFS_SUCCESS);
+	if (*bh) return FFS_SUCCESS;
 
 	WARN(!p_fs->dev_ejected,
 		"[EXFAT] No bh, device seems wrong or to be ejected.\n");
 
-	return(FFS_MEDIAERR);
+	return FFS_MEDIAERR;
 }
 
 s32 bdev_write(struct super_block *sb, u32 secno, struct buffer_head *bh, u32 num_secs, s32 sync)
@@ -102,7 +102,7 @@ s32 bdev_write(struct super_block *sb, u32 secno, struct buffer_head *bh, u32 nu
 	if (flags & EXFAT_DEBUGFLAGS_ERROR_RW)	return (FFS_MEDIAERR);
 #endif
 
-	if (!p_bd->opened) return(FFS_MEDIAERR);
+	if (!p_bd->opened) return FFS_MEDIAERR;
 
 	if (secno == bh->b_blocknr) {
 		lock_buffer(bh);
@@ -131,7 +131,7 @@ s32 bdev_write(struct super_block *sb, u32 secno, struct buffer_head *bh, u32 nu
 		__brelse(bh2);
 	}
 
-	return(FFS_SUCCESS);
+	return FFS_SUCCESS;
 
 no_bh:
 	WARN(!p_fs->dev_ejected,
@@ -150,7 +150,7 @@ s32 bdev_sync(struct super_block *sb)
 	if (flags & EXFAT_DEBUGFLAGS_ERROR_RW)	return (FFS_MEDIAERR);
 #endif
 
-	if (!p_bd->opened) return(FFS_MEDIAERR);
+	if (!p_bd->opened) return FFS_MEDIAERR;
 
 	return sync_blockdev(sb->s_bdev);
 }

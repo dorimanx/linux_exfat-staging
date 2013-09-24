@@ -37,7 +37,7 @@ DEFINE_SEMAPHORE(z_sem);
 s32 sm_init(struct semaphore *sm)
 {
 	sema_init(sm, 1);
-	return(0);
+	return 0;
 }
 
 s32 sm_P(struct semaphore *sm)
@@ -108,7 +108,7 @@ TIMESTAMP_T *tm_current(TIMESTAMP_T *tp)
 		tp->day  = 1;
 		tp->mon  = 1;
 		tp->year = 0;
-		return(tp);
+		return tp;
 	}
 #if BITS_PER_LONG == 64
 	if (second >= UNIX_SECS_2108) {
@@ -118,7 +118,7 @@ TIMESTAMP_T *tm_current(TIMESTAMP_T *tp)
 		tp->day  = 31;
 		tp->mon  = 12;
 		tp->year = 127;
-		return(tp);
+		return tp;
 	}
 #endif
 
@@ -152,5 +152,5 @@ TIMESTAMP_T *tm_current(TIMESTAMP_T *tp)
 	tp->mon  = month;
 	tp->year = year;
 
-	return(tp);
+	return tp;
 }

@@ -102,7 +102,7 @@ static u32 get_current_msec(void)
 {
 	struct timeval tm;
 	do_gettimeofday(&tm);
-	return((u32)(tm.tv_sec*1000000 + tm.tv_usec));
+	return (u32)(tm.tv_sec*1000000 + tm.tv_usec);
 }
 #define TIME_START()        do {__t1 = get_current_msec();} while (0)
 #define TIME_END()          do {__t2 = get_current_msec();} while (0)

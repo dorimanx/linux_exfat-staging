@@ -36,8 +36,9 @@ s32 Bitmap_test(u8 *bitmap, s32 i)
 	u8 data;
 
 	data = bitmap[BITMAP_LOC(i)];
-	if ((data >> BITMAP_SHIFT(i)) & 0x01) return(1);
-	return(0);
+	if ((data >> BITMAP_SHIFT(i)) & 0x01)
+		return 1;
+	return 0;
 }
 
 void Bitmap_set(u8 *bitmap, s32 i)
