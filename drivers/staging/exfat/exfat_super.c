@@ -1226,22 +1226,22 @@ static int exfat_write_end(struct file *file, struct address_space *mapping,
 	return err;
 }
 
-static ssize_t exfat_direct_IO(int rw, struct kiocb *iocb, const struct iovec *iov,
-				loff_t offset, unsigned long nr_segs)
+static ssize_t exfat_direct_IO(int rw, struct kiocb *iocb, struct iov_iter *iter,
+				loff_t offset)
 {
 	struct inode *inode = iocb->ki_filp->f_mapping->host;
 	struct address_space *mapping = iocb->ki_filp->f_mapping;
 	ssize_t ret;
 
 	if (rw == WRITE) {
-		if (EXFAT_I(inode)->mmu_private < (offset + iov_length(iov, nr_segs)))
+		if (EXFAT_I(inode)->mmu_private < (offset + iov_iter_count(iter)))
 			return 0;
 	}
-	ret = blockdev_direct_IO(rw, iocb, inode, iov,
-					offset, nr_segs, exfat_get_block);
+	ret = blockdev_direct_IO(rw, iocb, inode, iter,
+					offset, exfat_get_block);
 
 	if ((ret < 0) && (rw & WRITE))
-		exfat_write_failed(mapping, offset+iov_length(iov, nr_segs));
+		exfat_write_failed(mapping, offset+iov_iter_count(iter));
 
 	return ret;
 }
