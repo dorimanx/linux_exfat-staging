@@ -115,16 +115,19 @@ void nls_uniname_to_dosname(struct super_block *sb, DOS_NAME_T *p_dosname, UNI_N
 	/* search for the last embedded period */
 	last_period = NULL;
 	for (p = uniname; *p; p++) {
-		if (*p == (u16) '.') last_period = p;
+		if (*p == (u16) '.')
+			last_period = p;
 	}
 
 	i = 0;
 	while (i < DOS_NAME_LENGTH) {
 		if (i == 8) {
-			if (last_period == NULL) break;
+			if (last_period == NULL)
+				break;
 
 			if (uniname <= last_period) {
-				if (uniname < last_period) lossy = TRUE;
+				if (uniname < last_period)
+					lossy = TRUE;
 				uniname = last_period + 1;
 			}
 		}
@@ -163,13 +166,17 @@ void nls_uniname_to_dosname(struct super_block *sb, DOS_NAME_T *p_dosname, UNI_N
 				if ((*buf >= 'a') && (*buf <= 'z')) {
 					*(dosname+i) = *buf - ('a' - 'A');
 
-					if (i < 8) lower |= 0x08;
-					else lower |= 0x10;
+					if (i < 8)
+						lower |= 0x08;
+					else
+						lower |= 0x10;
 				} else if ((*buf >= 'A') && (*buf <= 'Z')) {
 					*(dosname+i) = *buf;
 
-					if (i < 8) upper |= 0x08;
-					else upper |= 0x10;
+					if (i < 8)
+						upper |= 0x08;
+					else
+						upper |= 0x10;
 				} else {
 					*(dosname+i) = *buf;
 				}
@@ -180,13 +187,19 @@ void nls_uniname_to_dosname(struct super_block *sb, DOS_NAME_T *p_dosname, UNI_N
 		uniname++;
 	}
 
-	if (*dosname == 0xE5) *dosname = 0x05;
-	if (*uniname != 0x0) lossy = TRUE;
+	if (*dosname == 0xE5)
+		*dosname = 0x05;
 
-	if (upper & lower) p_dosname->name_case = 0xFF;
-	else p_dosname->name_case = lower;
+	if (*uniname != 0x0)
+		lossy = TRUE;
 
-	if (p_lossy != NULL) *p_lossy = lossy;
+	if (upper & lower)
+		p_dosname->name_case = 0xFF;
+	else
+		p_dosname->name_case = lower;
+
+	if (p_lossy != NULL)
+		*p_lossy = lossy;
 }
 
 void nls_dosname_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, DOS_NAME_T *p_dosname)
@@ -204,7 +217,8 @@ void nls_dosname_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, DOS_N
 	}
 
 	for (; i < 8; i++, n++) {
-		if (*(dosname+i) == ' ') break;
+		if (*(dosname+i) == ' ')
+			break;
 
 		if ((*(dosname+i) >= 'A') && (*(dosname+i) <= 'Z') && (p_dosname->name_case & 0x08))
 			*(buf+n) = *(dosname+i) + ('a' - 'A');
@@ -217,7 +231,8 @@ void nls_dosname_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, DOS_N
 	}
 
 	for (i = 8; i < DOS_NAME_LENGTH; i++, n++) {
-		if (*(dosname+i) == ' ') break;
+		if (*(dosname+i) == ' ')
+			break;
 
 		if ((*(dosname+i) >= 'A') && (*(dosname+i) <= 'Z') && (p_dosname->name_case & 0x10))
 			*(buf+n) = *(dosname+i) + ('a' - 'A');
@@ -228,7 +243,8 @@ void nls_dosname_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, DOS_N
 
 	i = j = 0;
 	while (j < (MAX_NAME_LENGTH-1)) {
-		if (*(buf+i) == '\0') break;
+		if (*(buf+i) == '\0')
+			break;
 
 		i += convert_ch_to_uni(nls, uniname, (buf+i), NULL);
 
@@ -248,7 +264,8 @@ void nls_uniname_to_cstring(struct super_block *sb, u8 *p_cstring, UNI_NAME_T *p
 
 	i = 0;
 	while (i < (MAX_NAME_LENGTH-1)) {
-		if (*uniname == (u16) '\0') break;
+		if (*uniname == (u16) '\0')
+			break;
 
 		len = convert_uni_to_ch(nls, buf, *uniname, NULL);
 
@@ -279,7 +296,8 @@ void nls_cstring_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, u8 *p
 	end_of_name = p_cstring + strlen((char *) p_cstring);
 
 	while (*(--end_of_name) == ' ') {
-		if (end_of_name < p_cstring) break;
+		if (end_of_name < p_cstring)
+			break;
 	}
 	*(++end_of_name) = '\0';
 
@@ -287,7 +305,8 @@ void nls_cstring_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, u8 *p
 
 		/* strip all trailing periods */
 		while (*(--end_of_name) == '.') {
-			if (end_of_name < p_cstring) break;
+			if (end_of_name < p_cstring)
+				break;
 		}
 		*(++end_of_name) = '\0';
 	}
@@ -297,7 +316,8 @@ void nls_cstring_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, u8 *p
 
 	i = j = 0;
 	while (j < (MAX_NAME_LENGTH-1)) {
-		if (*(p_cstring+i) == '\0') break;
+		if (*(p_cstring+i) == '\0')
+			break;
 
 		i += convert_ch_to_uni(nls, uniname, (u8 *)(p_cstring+i), &lossy);
 

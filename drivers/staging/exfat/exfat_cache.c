@@ -164,7 +164,8 @@ static s32 __FAT_read(struct super_block *sb, u32 loc, u32 *content)
 			_content = GET16(fat_entry);
 		}
 
-		if (loc & 1) _content >>= 4;
+		if (loc & 1)
+			_content >>= 4;
 
 		_content &= 0x00000FFF;
 
@@ -567,7 +568,8 @@ void buf_lock(struct super_block *sb, u32 sec)
 	sm_P(&b_sem);
 
 	bp = buf_cache_find(sb, sec);
-	if (likely(bp != NULL)) bp->flag |= LOCKBIT;
+	if (likely(bp != NULL))
+		bp->flag |= LOCKBIT;
 
 	WARN(!bp, "[EXFAT] failed to find buffer_cache(sector:%u).\n", sec);
 
@@ -581,7 +583,8 @@ void buf_unlock(struct super_block *sb, u32 sec)
 	sm_P(&b_sem);
 
 	bp = buf_cache_find(sb, sec);
-	if (likely(bp != NULL)) bp->flag &= ~(LOCKBIT);
+	if (likely(bp != NULL))
+		bp->flag &= ~(LOCKBIT);
 
 	WARN(!bp, "[EXFAT] failed to find buffer_cache(sector:%u).\n", sec);
 
@@ -680,7 +683,8 @@ static BUF_CACHE_T *buf_cache_get(struct super_block *sb, u32 sec)
 	FS_INFO_T *p_fs = &(EXFAT_SB(sb)->fs_info);
 
 	bp = p_fs->buf_cache_lru_list.prev;
-	while (bp->flag & LOCKBIT) bp = bp->prev;
+	while (bp->flag & LOCKBIT)
+		bp = bp->prev;
 
 
 	move_to_mru(bp, &p_fs->buf_cache_lru_list);

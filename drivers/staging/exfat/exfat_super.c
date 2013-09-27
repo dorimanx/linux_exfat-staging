@@ -805,7 +805,8 @@ static int exfat_rename(struct inode *old_dir, struct dentry *old_dentry,
 
 	if ((S_ISDIR(old_inode->i_mode)) && (old_dir != new_dir)) {
 		drop_nlink(old_dir);
-		if (!new_inode) inc_nlink(new_dir);
+		if (!new_inode)
+			inc_nlink(new_dir);
 	}
 
 	old_dir->i_version++;
@@ -1043,10 +1044,12 @@ static void _exfat_truncate(struct inode *inode, loff_t old_size)
 	if (EXFAT_I(inode)->mmu_private > i_size_read(inode))
 		EXFAT_I(inode)->mmu_private = i_size_read(inode);
 
-	if (EXFAT_I(inode)->fid.start_clu == 0) goto out;
+	if (EXFAT_I(inode)->fid.start_clu == 0)
+		goto out;
 
 	err = FsTruncateFile(inode, old_size, i_size_read(inode));
-	if (err) goto out;
+	if (err)
+		goto out;
 
 	inode->i_ctime = inode->i_mtime = CURRENT_TIME_SEC;
 	if (IS_DIRSYNC(inode))
@@ -1093,7 +1096,8 @@ static int exfat_bmap(struct inode *inode, sector_t sector, sector_t *phys,
 
 	last_block = (i_size_read(inode) + (blocksize - 1)) >> blocksize_bits;
 	if (sector >= last_block) {
-		if (*create == 0) return 0;
+		if (*create == 0)
+			return 0;
 	} else {
 		*create = 0;
 	}
@@ -1984,10 +1988,12 @@ static int __init init_exfat(void)
 	printk(KERN_INFO "exFAT: Version %s\n", EXFAT_VERSION);
 
 	err = exfat_init_inodecache();
-	if (err) goto out;
+	if (err)
+		goto out;
 
 	err = register_filesystem(&exfat_fs_type);
-	if (err) goto out;
+	if (err)
+		goto out;
 
 	return 0;
 out:
