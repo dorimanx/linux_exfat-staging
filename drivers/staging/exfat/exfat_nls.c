@@ -54,7 +54,8 @@ u16 nls_upper(struct super_block *sb, u16 a)
 		return a;
 }
 
-u16* nls_wstrchr(u16 *str, u16 wchar) {
+u16* nls_wstrchr(u16 *str, u16 wchar)
+{
 	while (*str) {
 		if (*(str++) == wchar)
 			return str;
@@ -91,9 +92,8 @@ void nls_uniname_to_dosname(struct super_block *sb, DOS_NAME_T *p_dosname, UNI_N
 	u16 *p, *last_period;
 	struct nls_table *nls = EXFAT_SB(sb)->nls_disk;
 
-	for (i = 0; i < DOS_NAME_LENGTH; i++) {
+	for (i = 0; i < DOS_NAME_LENGTH; i++)
 		*(dosname+i) = ' ';
-	}
 
 	if (!nls_uniname_cmp(sb, uniname, (u16 *) UNI_CUR_DIR_NAME)) {
 		*(dosname) = '.';
@@ -149,9 +149,9 @@ void nls_uniname_to_dosname(struct super_block *sb, DOS_NAME_T *p_dosname, UNI_N
 			len = convert_uni_to_ch(nls, buf, *uniname, &lossy);
 
 			if (len > 1) {
-				if ((i >= 8) && ((i+len) > DOS_NAME_LENGTH)) {
+				if ((i >= 8) && ((i+len) > DOS_NAME_LENGTH))
 					break;
-				}
+				
 				if ((i <  8) && ((i+len) > 8)) {
 					i = 8;
 					continue;
@@ -159,9 +159,8 @@ void nls_uniname_to_dosname(struct super_block *sb, DOS_NAME_T *p_dosname, UNI_N
 
 				lower = 0xFF;
 
-				for (j = 0; j < len; j++, i++) {
+				for (j = 0; j < len; j++, i++)
 					*(dosname+i) = *(buf+j);
-				}
 			} else { /* len == 1 */
 				if ((*buf >= 'a') && (*buf <= 'z')) {
 					*(dosname+i) = *buf - ('a' - 'A');

@@ -265,9 +265,8 @@ static int exfat_readdir(struct file *filp, struct dir_context *ctx)
 			cpos++;
 			ctx->pos++;
 		}
-		if (cpos == 2) {
+		if (cpos == 2)
 			cpos = 0;
-		}
 	}
 	if (cpos & (DENTRY_SIZE - 1)) {
 		err = -ENOENT;
@@ -848,9 +847,8 @@ static int exfat_cont_expand(struct inode *inode, loff_t size)
 		err = (err) ? (err) : (err2);
 		err2 = write_inode_now(inode, 1);
 		err = (err) ? (err) : (err2);
-		if (!err) {
+		if (!err)
 			err =  filemap_fdatawait_range(mapping, start, start + count - 1);
-		}
 	}
 	return err;
 }
@@ -931,9 +929,8 @@ static int exfat_setattr(struct dentry *dentry, struct iattr *attr)
 
 	error = inode_change_ok(inode, attr);
 	attr->ia_valid = ia_valid;
-	if (error) {
+	if (error)
 		return error;
-	}
 
 	if (((attr->ia_valid & ATTR_UID) &&
 		 (!uid_eq(attr->ia_uid, sbi->options.fs_uid))) ||
@@ -1278,7 +1275,8 @@ static inline unsigned long exfat_hash(loff_t i_pos)
 	return hash_32(i_pos, EXFAT_HASH_BITS);
 }
 
-static struct inode *exfat_iget(struct super_block *sb, loff_t i_pos) {
+static struct inode *exfat_iget(struct super_block *sb, loff_t i_pos)
+{
 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
 	struct exfat_inode_info *info;
 	struct hlist_head *head = sbi->inode_hashtable + exfat_hash(i_pos);
@@ -1408,7 +1406,8 @@ static int exfat_sync_inode(struct inode *inode)
 	return exfat_write_inode(inode, NULL);
 }
 
-static struct inode *exfat_alloc_inode(struct super_block *sb) {
+static struct inode *exfat_alloc_inode(struct super_block *sb)
+{
 	struct exfat_inode_info *ei;
 
 	ei = kmem_cache_alloc(exfat_inode_cachep, GFP_NOFS);
@@ -1731,9 +1730,8 @@ static int parse_options(char *options, int silent, int *debug,
 			break;
 #endif
 		default:
-			if (!silent) {
+			if (!silent)
 				printk(KERN_ERR "[EXFAT] Unrecognized mount option %s or missing value\n", p);
-			}
 			return -EINVAL;
 		}
 	}

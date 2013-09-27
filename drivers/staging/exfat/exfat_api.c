@@ -79,9 +79,8 @@ s32 FsMountVol(struct super_block *sb)
 	sm_P(&(fs_struct[drv].v_sem));
 
 	err = buf_init(sb);
-	if (!err) {
+	if (!err)
 		err = ffsMountVol(sb, drv);
-	}
 
 	sm_V(&(fs_struct[drv].v_sem));
 

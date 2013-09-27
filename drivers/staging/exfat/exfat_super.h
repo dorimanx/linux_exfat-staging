@@ -94,7 +94,8 @@ struct exfat_inode_info {
 
 #define EXFAT_SB(sb)		((struct exfat_sb_info *)((sb)->s_fs_info))
 
-static inline struct exfat_inode_info *EXFAT_I(struct inode *inode) {
+static inline struct exfat_inode_info *EXFAT_I(struct inode *inode)
+{
 	return container_of(inode, struct exfat_inode_info, vfs_inode);
 }
 

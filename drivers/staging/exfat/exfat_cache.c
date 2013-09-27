@@ -83,9 +83,8 @@ s32 buf_init(struct super_block *sb)
 		p_fs->FAT_cache_hash_list[i].hash_next = p_fs->FAT_cache_hash_list[i].hash_prev = &(p_fs->FAT_cache_hash_list[i]);
 	}
 
-	for (i = 0; i < FAT_CACHE_SIZE; i++) {
+	for (i = 0; i < FAT_CACHE_SIZE; i++)
 		FAT_cache_insert_hash(sb, &(p_fs->FAT_cache_array[i]));
-	}
 
 	for (i = 0; i < BUF_CACHE_HASH_SIZE; i++) {
 		p_fs->buf_cache_hash_list[i].drv = -1;
@@ -93,9 +92,8 @@ s32 buf_init(struct super_block *sb)
 		p_fs->buf_cache_hash_list[i].hash_next = p_fs->buf_cache_hash_list[i].hash_prev = &(p_fs->buf_cache_hash_list[i]);
 	}
 
-	for (i = 0; i < BUF_CACHE_SIZE; i++) {
+	for (i = 0; i < BUF_CACHE_SIZE; i++)
 		buf_cache_insert_hash(sb, &(p_fs->buf_cache_array[i]));
-	}
 
 	return FFS_SUCCESS;
 }
@@ -391,9 +389,8 @@ void FAT_modify(struct super_block *sb, u32 sec)
 	BUF_CACHE_T *bp;
 
 	bp = FAT_cache_find(sb, sec);
-	if (bp != NULL) {
+	if (bp != NULL)
 		sector_write(sb, sec, bp->buf_bh, 0);
-	}
 }
 
 void FAT_release_all(struct super_block *sb)
@@ -552,9 +549,8 @@ void buf_modify(struct super_block *sb, u32 sec)
 	sm_P(&b_sem);
 
 	bp = buf_cache_find(sb, sec);
-	if (likely(bp != NULL)) {
+	if (likely(bp != NULL))
 		sector_write(sb, sec, bp->buf_bh, 0);
-	}
 
 	WARN(!bp, "[EXFAT] failed to find buffer_cache(sector:%u).\n", sec);
 
