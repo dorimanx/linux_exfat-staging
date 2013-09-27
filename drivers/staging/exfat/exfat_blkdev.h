@@ -25,11 +25,11 @@
 extern "C" {
 #endif
 	typedef struct __BD_INFO_T {
-		s32 sector_size;      // in bytes
+		s32 sector_size;      /* in bytes */
 		s32 sector_size_bits;
 		s32 sector_size_mask;
-		s32 num_sectors;      // total number of sectors in this block device
-		bool  opened;           // opened or not
+		s32 num_sectors;      /* total number of sectors in this block device */
+		bool  opened;           /* opened or not */
 	} BD_INFO_T;
 
 	s32 bdev_init(void);

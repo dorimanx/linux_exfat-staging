@@ -40,27 +40,27 @@ extern "C" {
 #define EXFAT_DEBUGFLAGS_ERROR_RW              0x02
 #endif
 
-#define MAX_VOLUME              4           // max num of volumes per device
+#define MAX_VOLUME              4           /* max num of volumes per device */
 
-#define DENTRY_SIZE             32          // dir entry size
+#define DENTRY_SIZE             32          /* dir entry size */
 #define DENTRY_SIZE_BITS        5
 
 #define PBR_SIGNATURE           0xAA55
 #define EXT_SIGNATURE           0xAA550000
-#define VOL_LABEL               "NO NAME    " // size should be 11
-#define OEM_NAME                "MSWIN4.1"  // size should be 8
-#define STR_FAT12               "FAT12   "  // size should be 8
-#define STR_FAT16               "FAT16   "  // size should be 8
-#define STR_FAT32               "FAT32   "  // size should be 8
-#define STR_EXFAT               "EXFAT   "  // size should be 8
+#define VOL_LABEL               "NO NAME    " /* size should be 11 */
+#define OEM_NAME                "MSWIN4.1"  /* size should be 8 */
+#define STR_FAT12               "FAT12   "  /* size should be 8 */
+#define STR_FAT16               "FAT16   "  /* size should be 8 */
+#define STR_FAT32               "FAT32   "  /* size should be 8 */
+#define STR_EXFAT               "EXFAT   "  /* size should be 8 */
 #define VOL_CLEAN               0x0000
 #define VOL_DIRTY               0x0002
 
 /* max number of clusters */
-#define FAT12_THRESHOLD         4087        // 2^12 - 1 + 2 (clu 0 & 1)
-#define FAT16_THRESHOLD         65527       // 2^16 - 1 + 2
-#define FAT32_THRESHOLD         268435457   // 2^28 - 1 + 2
-#define EXFAT_THRESHOLD         268435457   // 2^28 - 1 + 2
+#define FAT12_THRESHOLD         4087        /* 2^12 - 1 + 2 (clu 0 & 1) */
+#define FAT16_THRESHOLD         65527       /* 2^16 - 1 + 2 */
+#define FAT32_THRESHOLD         268435457   /* 2^28 - 1 + 2 */
+#define EXFAT_THRESHOLD         268435457   /* 2^28 - 1 + 2 */
 
 #define TYPE_UNUSED             0x0000
 #define TYPE_DELETED            0x0001
@@ -422,42 +422,42 @@ extern "C" {
 	} FS_FUNC_T;
 
 	typedef struct __FS_INFO_T {
-		u32      drv;                    // drive ID
-		u32      vol_type;               // volume FAT type
-		u32      vol_id;                 // volume serial number
+		u32      drv;                    /* drive ID */
+		u32      vol_type;               /* volume FAT type */
+		u32      vol_id;                 /* volume serial number */
 
-		u32      num_sectors;            // num of sectors in volume
-		u32      num_clusters;           // num of clusters in volume
-		u32      cluster_size;           // cluster size in bytes
+		u32      num_sectors;            /* num of sectors in volume */
+		u32      num_clusters;           /* num of clusters in volume */
+		u32      cluster_size;           /* cluster size in bytes */
 		u32      cluster_size_bits;
-		u32      sectors_per_clu;        // cluster size in sectors
+		u32      sectors_per_clu;        /* cluster size in sectors */
 		u32      sectors_per_clu_bits;
 
-		u32      PBR_sector;             // PBR sector
-		u32      FAT1_start_sector;      // FAT1 start sector
-		u32      FAT2_start_sector;      // FAT2 start sector
-		u32      root_start_sector;      // root dir start sector
-		u32      data_start_sector;      // data area start sector
-		u32      num_FAT_sectors;        // num of FAT sectors
+		u32      PBR_sector;             /* PBR sector */
+		u32      FAT1_start_sector;      /* FAT1 start sector */
+		u32      FAT2_start_sector;      /* FAT2 start sector */
+		u32      root_start_sector;      /* root dir start sector */
+		u32      data_start_sector;      /* data area start sector */
+		u32      num_FAT_sectors;        /* num of FAT sectors */
 
-		u32      root_dir;               // root dir cluster
-		u32      dentries_in_root;       // num of dentries in root dir
-		u32      dentries_per_clu;       // num of dentries per cluster
+		u32      root_dir;               /* root dir cluster */
+		u32      dentries_in_root;       /* num of dentries in root dir */
+		u32      dentries_per_clu;       /* num of dentries per cluster */
 
-		u32      vol_flag;               // volume dirty flag
-		struct buffer_head *pbr_bh;         // PBR sector
+		u32      vol_flag;               /* volume dirty flag */
+		struct buffer_head *pbr_bh;         /* PBR sector */
 
-		u32      map_clu;                // allocation bitmap start cluster
-		u32      map_sectors;            // num of allocation bitmap sectors
-		struct buffer_head **vol_amap;      // allocation bitmap
+		u32      map_clu;                /* allocation bitmap start cluster */
+		u32      map_sectors;            /* num of allocation bitmap sectors */
+		struct buffer_head **vol_amap;      /* allocation bitmap */
 
-		u16      **vol_utbl;               // upcase table
+		u16      **vol_utbl;               /* upcase table */
 
-		u32      clu_srch_ptr;           // cluster search pointer
-		u32      used_clusters;          // number of used clusters
-		UENTRY_T    hint_uentry;            // unused entry hint information
+		u32      clu_srch_ptr;           /* cluster search pointer */
+		u32      used_clusters;          /* number of used clusters */
+		UENTRY_T    hint_uentry;         /* unused entry hint information */
 
-		u32      dev_ejected;            // block device operation error flag
+		u32      dev_ejected;            /* block device operation error flag
 
 		FS_FUNC_T	*fs_func;
 
@@ -475,9 +475,9 @@ extern "C" {
 #define ES_ALL_ENTRIES	0
 
 	typedef struct {
-		u32	sector;		// sector number that contains file_entry
-		s32	offset;		// byte offset in the sector
-		s32	alloc_flag;	// flag in stream entry. 01 for cluster chain, 03 for contig. clusteres.
+		u32	sector;		/* sector number that contains file_entry */
+		s32	offset;		/* byte offset in the sector */
+		s32	alloc_flag;	/* flag in stream entry. 01 for cluster chain, 03 for contig. clusteres. */
 		u32 num_entries;
 
 		void *__buf;

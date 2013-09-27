@@ -86,13 +86,13 @@ extern "C" {
 	} DATE_TIME_T;
 
 	typedef struct {
-		u32      Offset;    // start sector number of the partition
-		u32      Size;      // in sectors
+		u32      Offset;    /* start sector number of the partition */
+		u32      Size;      /* in sectors */
 	} PART_INFO_T;
 
 	typedef struct {
-		u32      SecSize;    // sector size in bytes
-		u32      DevSize;    // block device size in sectors
+		u32      SecSize;    /* sector size in bytes */
+		u32      DevSize;    /* block device size in sectors */
 	} DEV_INFO_T;
 
 	typedef struct {
@@ -124,7 +124,7 @@ extern "C" {
 
 	typedef struct {
 		char        Name[MAX_NAME_LENGTH * MAX_CHARSET_SIZE];
-		char        ShortName[DOS_NAME_LENGTH + 2];     // used only for FAT12/16/32, not used for exFAT
+		char        ShortName[DOS_NAME_LENGTH + 2];     /* used only for FAT12/16/32, not used for exFAT */
 		u32      Attr;
 		u64      Size;
 		u32      NumSubdirs;

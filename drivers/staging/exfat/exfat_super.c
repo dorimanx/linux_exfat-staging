@@ -1830,7 +1830,7 @@ static int exfat_fill_super(struct super_block *sb, void *data, int silent)
 
 	error = -EIO;
 	sb_min_blocksize(sb, 512);
-	sb->s_maxbytes = 0x7fffffffffffffffLL;    // maximum file size
+	sb->s_maxbytes = 0x7fffffffffffffffLL;    /* maximum file size */
 
 	ret = FsMountVol(sb);
 	if (ret) {
