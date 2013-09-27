@@ -136,9 +136,9 @@ static inline mode_t exfat_make_mode(struct exfat_sb_info *sbi,
 static inline u32 exfat_make_attr(struct inode *inode)
 {
 	if (exfat_mode_can_hold_ro(inode) && !(inode->i_mode & S_IWUGO))
-		return ((EXFAT_I(inode)->fid.attr) | ATTR_READONLY);
+		return (EXFAT_I(inode)->fid.attr) | ATTR_READONLY;
 	else
-		return (EXFAT_I(inode)->fid.attr);
+		return EXFAT_I(inode)->fid.attr;
 }
 
 static inline void exfat_save_attr(struct inode *inode, u32 attr)

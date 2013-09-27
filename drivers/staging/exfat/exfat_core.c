@@ -2078,7 +2078,7 @@ s32 set_alloc_bitmap(struct super_block *sb, u32 clu)
 
 	exfat_bitmap_set((u8 *) p_fs->vol_amap[i]->b_data, b);
 
-	return (sector_write(sb, sector, p_fs->vol_amap[i], 0));
+	return sector_write(sb, sector, p_fs->vol_amap[i], 0);
 }
 
 s32 clr_alloc_bitmap(struct super_block *sb, u32 clu)
@@ -2100,7 +2100,7 @@ s32 clr_alloc_bitmap(struct super_block *sb, u32 clu)
 
 	exfat_bitmap_clear((u8 *) p_fs->vol_amap[i]->b_data, b);
 
-	return (sector_write(sb, sector, p_fs->vol_amap[i], 0));
+	return sector_write(sb, sector, p_fs->vol_amap[i], 0);
 
 #ifdef CONFIG_EXFAT_DISCARD
 	if (opts->discard) {
@@ -3276,7 +3276,7 @@ err_out:
 
 s32 write_whole_entry_set(struct super_block *sb, ENTRY_SET_CACHE_T *es)
 {
-	return (__write_partial_entries_in_entry_set(sb, es, es->sector, es->offset, es->num_entries));
+	return __write_partial_entries_in_entry_set(sb, es, es->sector, es->offset, es->num_entries);
 }
 
 s32 write_partial_entries_in_entry_set(struct super_block *sb, ENTRY_SET_CACHE_T *es, DENTRY_T *ep, u32 count)
@@ -3304,7 +3304,7 @@ s32 write_partial_entries_in_entry_set(struct super_block *sb, ENTRY_SET_CACHE_T
 	off = byte_offset & p_bd->sector_size_mask;
 	sec = byte_offset >> p_bd->sector_size_bits;
 	sec += START_SECTOR(clu);
-	return (__write_partial_entries_in_entry_set(sb, es, sec, off, count));
+	return __write_partial_entries_in_entry_set(sb, es, sec, off, count);
 }
 
 s32 search_deleted_or_unused_entry(struct super_block *sb, CHAIN_T *p_dir, s32 num_entries)
