@@ -203,7 +203,7 @@ void nls_dosname_to_uniname(struct super_block *sb, UNI_NAME_T *p_uniname, DOS_N
 		n++;
 	}
 
-	for ( ; i < 8; i++, n++) {
+	for (; i < 8; i++, n++) {
 		if (*(dosname+i) == ' ') break;
 
 		if ((*(dosname+i) >= 'A') && (*(dosname+i) <= 'Z') && (p_dosname->name_case & 0x08))
@@ -334,7 +334,7 @@ static s32 convert_ch_to_uni(struct nls_table *nls, u16 *uni, u8 *ch, s32 *lossy
 
 	if ((len = nls->char2uni(ch, NLS_MAX_CHARSET_SIZE, uni)) < 0) {
 		/* conversion failed */
-		printk("%s: fail to use nls \n", __func__);
+		printk("%s: fail to use nls\n", __func__);
 		if (lossy != NULL)
 			*lossy = TRUE;
 		*uni = (u16) '_';
@@ -360,7 +360,7 @@ static s32 convert_uni_to_ch(struct nls_table *nls, u8 *ch, u16 uni, s32 *lossy)
 
 	if ((len = nls->uni2char(uni, ch, NLS_MAX_CHARSET_SIZE)) < 0) {
 		/* conversion failed */
-		printk("%s: fail to use nls \n", __func__);
+		printk("%s: fail to use nls\n", __func__);
 		if (lossy != NULL)
 			*lossy = TRUE;
 		ch[0] = '_';

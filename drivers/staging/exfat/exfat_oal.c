@@ -83,7 +83,7 @@ extern struct timezone sys_tz;
 			leap_year = ((year + 3) / 4) - 1;       \
 		else                                            \
 			leap_year = ((year + 3) / 4);           \
-	} while(0)
+	} while (0)
 
 /* Linear day numbers of the respective 1sts in non-leap years. */
 static time_t accum_days_in_year[] = {

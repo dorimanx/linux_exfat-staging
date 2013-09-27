@@ -97,68 +97,68 @@ extern "C" {
 #define FALSE			0
 #define TRUE			1
 
-#define MIN(a,b)		(((a)<(b))?(a):(b))
-#define MAX(a,b)		(((a)>(b))?(a):(b))
+#define MIN(a, b)		(((a) < (b)) ? (a) : (b))
+#define MAX(a, b)		(((a) > (b)) ? (a) : (b))
 
 #define START_SECTOR(x) \
-        ( (((x)-2) << p_fs->sectors_per_clu_bits) + p_fs->data_start_sector )
+	((((x) - 2) << p_fs->sectors_per_clu_bits) + p_fs->data_start_sector)
 
 #define IS_LAST_SECTOR_IN_CLUSTER(sec) \
-		( (((sec) -  p_fs->data_start_sector + 1) & ((1 <<  p_fs->sectors_per_clu_bits) -1)) == 0)
+		((((sec) - p_fs->data_start_sector + 1) & ((1 <<  p_fs->sectors_per_clu_bits) - 1)) == 0)
 
 #define GET_CLUSTER_FROM_SECTOR(sec)			\
-		((((sec) -  p_fs->data_start_sector) >> p_fs->sectors_per_clu_bits) +2)
+		((((sec) - p_fs->data_start_sector) >> p_fs->sectors_per_clu_bits) + 2)
 
 #define GET16(p_src) \
-        ( ((u16)(p_src)[0]) | (((u16)(p_src)[1]) << 8) )
+	(((u16)(p_src)[0]) | (((u16)(p_src)[1]) << 8))
 #define GET32(p_src) \
-        ( ((u32)(p_src)[0]) | (((u32)(p_src)[1]) << 8) | \
-         (((u32)(p_src)[2]) << 16) | (((u32)(p_src)[3]) << 24) )
+	(((u32)(p_src)[0]) | (((u32)(p_src)[1]) << 8) | \
+	(((u32)(p_src)[2]) << 16) | (((u32)(p_src)[3]) << 24))
 #define GET64(p_src) \
-        ( ((u64)(p_src)[0]) | (((u64)(p_src)[1]) << 8) | \
-         (((u64)(p_src)[2]) << 16) | (((u64)(p_src)[3]) << 24) | \
-         (((u64)(p_src)[4]) << 32) | (((u64)(p_src)[5]) << 40) | \
-         (((u64)(p_src)[6]) << 48) | (((u64)(p_src)[7]) << 56) )
+	(((u64)(p_src)[0]) | (((u64)(p_src)[1]) << 8) | \
+	(((u64)(p_src)[2]) << 16) | (((u64)(p_src)[3]) << 24) | \
+	(((u64)(p_src)[4]) << 32) | (((u64)(p_src)[5]) << 40) | \
+	(((u64)(p_src)[6]) << 48) | (((u64)(p_src)[7]) << 56))
 
 
-#define SET16(p_dst,src)                                  \
-        do {                                              \
-            (p_dst)[0]=(u8)(src);                      \
-            (p_dst)[1]=(u8)(((u16)(src)) >> 8);     \
-        } while (0)
-#define SET32(p_dst,src)                                  \
-        do {                                              \
-            (p_dst)[0]=(u8)(src);                      \
-            (p_dst)[1]=(u8)(((u32)(src)) >> 8);     \
-            (p_dst)[2]=(u8)(((u32)(src)) >> 16);    \
-            (p_dst)[3]=(u8)(((u32)(src)) >> 24);    \
-        } while (0)
-#define SET64(p_dst,src)                                  \
-        do {                                              \
-            (p_dst)[0]=(u8)(src);                      \
-            (p_dst)[1]=(u8)(((u64)(src)) >> 8);     \
-            (p_dst)[2]=(u8)(((u64)(src)) >> 16);    \
-            (p_dst)[3]=(u8)(((u64)(src)) >> 24);    \
-            (p_dst)[4]=(u8)(((u64)(src)) >> 32);    \
-            (p_dst)[5]=(u8)(((u64)(src)) >> 40);    \
-            (p_dst)[6]=(u8)(((u64)(src)) >> 48);    \
-            (p_dst)[7]=(u8)(((u64)(src)) >> 56);    \
-        } while (0)
+#define SET16(p_dst, src)                                  \
+	do {                                              \
+		(p_dst)[0] = (u8)(src);                     \
+		(p_dst)[1] = (u8)(((u16)(src)) >> 8);       \
+	} while (0)
+#define SET32(p_dst, src)                                  \
+	do {                                              \
+		(p_dst)[0] = (u8)(src);                     \
+		(p_dst)[1] = (u8)(((u32)(src)) >> 8);       \
+		(p_dst)[2] = (u8)(((u32)(src)) >> 16);      \
+		(p_dst)[3] = (u8)(((u32)(src)) >> 24);      \
+	} while (0)
+#define SET64(p_dst, src)                                  \
+	do {                                              \
+		(p_dst)[0] = (u8)(src);                   \
+		(p_dst)[1] = (u8)(((u64)(src)) >> 8);     \
+		(p_dst)[2] = (u8)(((u64)(src)) >> 16);    \
+		(p_dst)[3] = (u8)(((u64)(src)) >> 24);    \
+		(p_dst)[4] = (u8)(((u64)(src)) >> 32);    \
+		(p_dst)[5] = (u8)(((u64)(src)) >> 40);    \
+		(p_dst)[6] = (u8)(((u64)(src)) >> 48);    \
+		(p_dst)[7] = (u8)(((u64)(src)) >> 56);    \
+	} while (0)
 
 #ifdef __LITTLE_ENDIAN
-#define GET16_A(p_src)          (*((u16 *)(p_src)))
-#define GET32_A(p_src)          (*((u32 *)(p_src)))
-#define GET64_A(p_src)          (*((u64 *)(p_src)))
-#define SET16_A(p_dst,src)      *((u16 *)(p_dst)) = (u16)(src)
-#define SET32_A(p_dst,src)      *((u32 *)(p_dst)) = (u32)(src)
-#define SET64_A(p_dst,src)      *((u64 *)(p_dst)) = (u64)(src)
-#else 	/* BIG_ENDIAN */
-#define GET16_A(p_src)          GET16(p_src)
-#define GET32_A(p_src)          GET32(p_src)
-#define GET64_A(p_src)          GET64(p_src)
-#define SET16_A(p_dst,src)      SET16(p_dst, src)
-#define SET32_A(p_dst,src)      SET32(p_dst, src)
-#define SET64_A(p_dst,src)      SET64(p_dst, src)
+#define GET16_A(p_src)		(*((u16 *)(p_src)))
+#define GET32_A(p_src)		(*((u32 *)(p_src)))
+#define GET64_A(p_src)		(*((u64 *)(p_src)))
+#define SET16_A(p_dst, src)	*((u16 *)(p_dst)) = (u16)(src)
+#define SET32_A(p_dst, src)	*((u32 *)(p_dst)) = (u32)(src)
+#define SET64_A(p_dst, src)	*((u64 *)(p_dst)) = (u64)(src)
+#else /* BIG_ENDIAN */
+#define GET16_A(p_src)		GET16(p_src)
+#define GET32_A(p_src)		GET32(p_src)
+#define GET64_A(p_src)		GET64(p_src)
+#define SET16_A(p_dst, src)	SET16(p_dst, src)
+#define SET32_A(p_dst, src)	SET32(p_dst, src)
+#define SET64_A(p_dst, src)	SET64(p_dst, src)
 #endif
 
 #define HIGH_INDEX_BIT (8)
@@ -171,7 +171,7 @@ extern "C" {
 #define DPRINTK(...)			\
 	do {								\
 		printk("[EXFAT] " __VA_ARGS__);	\
-	} while(0)
+	} while (0)
 #else
 #define DPRINTK(...)
 #endif
@@ -574,10 +574,10 @@ extern "C" {
 	s32   find_location(struct super_block *sb, CHAIN_T *p_dir, s32 entry, u32 *sector, s32 *offset);
 	DENTRY_T *get_entry_with_sector(struct super_block *sb, u32 sector, s32 offset);
 	DENTRY_T *get_entry_in_dir(struct super_block *sb, CHAIN_T *p_dir, s32 entry, u32 *sector);
-	ENTRY_SET_CACHE_T *get_entry_set_in_dir (struct super_block *sb, CHAIN_T *p_dir, s32 entry, u32 type, DENTRY_T **file_ep);
-	void release_entry_set (ENTRY_SET_CACHE_T *es);
-	s32 write_whole_entry_set (struct super_block *sb, ENTRY_SET_CACHE_T *es);
-	s32 write_partial_entries_in_entry_set (struct super_block *sb, ENTRY_SET_CACHE_T *es, DENTRY_T *ep, u32 count);
+	ENTRY_SET_CACHE_T *get_entry_set_in_dir(struct super_block *sb, CHAIN_T *p_dir, s32 entry, u32 type, DENTRY_T **file_ep);
+	void release_entry_set(ENTRY_SET_CACHE_T *es);
+	s32 write_whole_entry_set(struct super_block *sb, ENTRY_SET_CACHE_T *es);
+	s32 write_partial_entries_in_entry_set(struct super_block *sb, ENTRY_SET_CACHE_T *es, DENTRY_T *ep, u32 count);
 	s32  search_deleted_or_unused_entry(struct super_block *sb, CHAIN_T *p_dir, s32 num_entries);
 	s32  find_empty_entry(struct inode *inode, CHAIN_T *p_dir, s32 num_entries);
 	s32  fat_find_dir_entry(struct super_block *sb, CHAIN_T *p_dir, UNI_NAME_T *p_uniname, s32 num_entries, DOS_NAME_T *p_dosname, u32 type);
@@ -586,7 +586,7 @@ extern "C" {
 	s32  exfat_count_ext_entries(struct super_block *sb, CHAIN_T *p_dir, s32 entry, DENTRY_T *p_entry);
 	s32  count_dos_name_entries(struct super_block *sb, CHAIN_T *p_dir, u32 type);
 	void   update_dir_checksum(struct super_block *sb, CHAIN_T *p_dir, s32 entry);
-	void update_dir_checksum_with_entry_set (struct super_block *sb, ENTRY_SET_CACHE_T *es);
+	void update_dir_checksum_with_entry_set(struct super_block *sb, ENTRY_SET_CACHE_T *es);
 	bool   is_dir_empty(struct super_block *sb, CHAIN_T *p_dir);
 
 	s32  get_num_entries_and_dos_name(struct super_block *sb, CHAIN_T *p_dir, UNI_NAME_T *p_uniname, s32 *entries, DOS_NAME_T *p_dosname);

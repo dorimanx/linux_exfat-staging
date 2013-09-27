@@ -123,7 +123,7 @@ extern "C" {
 	} FILE_ID_T;
 
 	typedef struct {
-		char        Name[MAX_NAME_LENGTH *MAX_CHARSET_SIZE];
+		char        Name[MAX_NAME_LENGTH * MAX_CHARSET_SIZE];
 		char        ShortName[DOS_NAME_LENGTH + 2];     // used only for FAT12/16/32, not used for exFAT
 		u32      Attr;
 		u64      Size;

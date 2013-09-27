@@ -107,12 +107,12 @@ extern struct timezone sys_tz;
 #define SECS_PER_DAY    (24 * SECS_PER_HOUR)
 
 #define MAKE_LEAP_YEAR(leap_year, year)                         \
-        do {                                                    \
-                if (unlikely(year > NO_LEAP_YEAR_2100))         \
-                        leap_year = ((year + 3) / 4) - 1;       \
-                else                                            \
-                        leap_year = ((year + 3) / 4);           \
-        } while(0)
+	do {                                                    \
+		if (unlikely(year > NO_LEAP_YEAR_2100))         \
+			leap_year = ((year + 3) / 4) - 1;       \
+		else                                            \
+			leap_year = ((year + 3) / 4);           \
+	} while (0)
 
 /* Linear day numbers of the respective 1sts in non-leap years. */
 static time_t accum_days_in_year[] = {
@@ -225,8 +225,8 @@ static void __unlock_super(struct super_block *sb)
 
 static int __is_sb_dirty(struct super_block *sb)
 {
-        struct exfat_sb_info *sbi = EXFAT_SB(sb);
-        return sbi->s_dirt;
+	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+	return sbi->s_dirt;
 }
 
 static void __set_sb_clean(struct super_block *sb)
@@ -844,9 +844,9 @@ static int exfat_cont_expand(struct inode *inode, loff_t size)
 	if (IS_SYNC(inode)) {
 		err = filemap_fdatawrite_range(mapping, start, start + count - 1);
 		err2 = sync_mapping_buffers(mapping);
-		err = (err)?(err):(err2);
+		err = (err) ? (err) : (err2);
 		err2 = write_inode_now(inode, 1);
-		err = (err)?(err):(err2);
+		err = (err) ? (err) : (err2);
 		if (!err) {
 			err =  filemap_fdatawait_range(mapping, start, start + count - 1);
 		}
@@ -956,7 +956,7 @@ static int exfat_setattr(struct dentry *dentry, struct iattr *attr)
 
 	if (attr->ia_valid & ATTR_SIZE) {
 		old_size = i_size_read(inode);
-                down_write(&EXFAT_I(inode)->truncate_lock);
+		down_write(&EXFAT_I(inode)->truncate_lock);
 		truncate_setsize(inode, attr->ia_size);
 		_exfat_truncate(inode, old_size);
 		up_write(&EXFAT_I(inode)->truncate_lock);
@@ -1341,7 +1341,7 @@ static int exfat_fill_inode(struct inode *inode, FILE_ID_T *fid)
 
 		i_size_write(inode, info.Size);
 		EXFAT_I(inode)->mmu_private = i_size_read(inode);
-		set_nlink(inode,info.NumSubdirs);
+		set_nlink(inode, info.NumSubdirs);
 	} else if (info.Attr & ATTR_SYMLINK) { /* symbolic link */
 		inode->i_generation |= 1;
 		inode->i_mode = exfat_make_mode(sbi, info.Attr, S_IRWXUGO);
@@ -1790,7 +1790,7 @@ static int exfat_read_root(struct inode *inode)
 
 	exfat_save_attr(inode, ATTR_SUBDIR);
 	inode->i_mtime = inode->i_atime = inode->i_ctime = ts;
-	set_nlink(inode,info.NumSubdirs + 2);
+	set_nlink(inode, info.NumSubdirs + 2);
 
 	return 0;
 }

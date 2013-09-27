@@ -409,7 +409,7 @@ void FAT_release_all(struct super_block *sb)
 			bp->sec = ~0;
 			bp->flag = 0;
 
-			if(bp->buf_bh) {
+			if (bp->buf_bh) {
 				__brelse(bp->buf_bh);
 				bp->buf_bh = NULL;
 			}
@@ -601,7 +601,7 @@ void buf_release(struct super_block *sb, u32 sec)
 		bp->sec = ~0;
 		bp->flag = 0;
 
-		if(bp->buf_bh) {
+		if (bp->buf_bh) {
 			__brelse(bp->buf_bh);
 			bp->buf_bh = NULL;
 		}
@@ -626,7 +626,7 @@ void buf_release_all(struct super_block *sb)
 			bp->sec = ~0;
 			bp->flag = 0;
 
-			if(bp->buf_bh) {
+			if (bp->buf_bh) {
 				__brelse(bp->buf_bh);
 				bp->buf_bh = NULL;
 			}
