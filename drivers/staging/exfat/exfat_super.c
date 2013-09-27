@@ -835,7 +835,8 @@ static int exfat_cont_expand(struct inode *inode, loff_t size)
 	loff_t start = i_size_read(inode), count = size - i_size_read(inode);
 	int err, err2;
 
-	if ((err = generic_cont_expand_simple(inode, size)) != 0)
+	err = generic_cont_expand_simple(inode, size);
+	if (err != 0)
 		return err;
 
 	inode->i_ctime = inode->i_mtime = CURRENT_TIME_SEC;

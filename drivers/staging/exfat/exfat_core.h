@@ -149,9 +149,9 @@ extern "C" {
 #define GET16_A(p_src)		(*((u16 *)(p_src)))
 #define GET32_A(p_src)		(*((u32 *)(p_src)))
 #define GET64_A(p_src)		(*((u64 *)(p_src)))
-#define SET16_A(p_dst, src)	*((u16 *)(p_dst)) = (u16)(src)
-#define SET32_A(p_dst, src)	*((u32 *)(p_dst)) = (u32)(src)
-#define SET64_A(p_dst, src)	*((u64 *)(p_dst)) = (u64)(src)
+#define SET16_A(p_dst, src)	(*((u16 *)(p_dst)) = (u16)(src))
+#define SET32_A(p_dst, src)	(*((u32 *)(p_dst)) = (u32)(src))
+#define SET64_A(p_dst, src)	(*((u64 *)(p_dst)) = (u64)(src))
 #else /* BIG_ENDIAN */
 #define GET16_A(p_src)		GET16(p_src)
 #define GET32_A(p_src)		GET32(p_src)

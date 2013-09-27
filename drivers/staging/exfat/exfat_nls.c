@@ -54,7 +54,7 @@ u16 nls_upper(struct super_block *sb, u16 a)
 		return a;
 }
 
-u16* nls_wstrchr(u16 *str, u16 wchar)
+u16 *nls_wstrchr(u16 *str, u16 wchar)
 {
 	while (*str) {
 		if (*(str++) == wchar)
@@ -151,7 +151,7 @@ void nls_uniname_to_dosname(struct super_block *sb, DOS_NAME_T *p_dosname, UNI_N
 			if (len > 1) {
 				if ((i >= 8) && ((i+len) > DOS_NAME_LENGTH))
 					break;
-				
+
 				if ((i <  8) && ((i+len) > 8)) {
 					i = 8;
 					continue;
@@ -351,7 +351,8 @@ static s32 convert_ch_to_uni(struct nls_table *nls, u16 *uni, u8 *ch, s32 *lossy
 		return 1;
 	}
 
-	if ((len = nls->char2uni(ch, NLS_MAX_CHARSET_SIZE, uni)) < 0) {
+	len = nls->char2uni(ch, NLS_MAX_CHARSET_SIZE, uni);
+	if (len < 0) {
 		/* conversion failed */
 		printk("%s: fail to use nls\n", __func__);
 		if (lossy != NULL)
@@ -377,7 +378,8 @@ static s32 convert_uni_to_ch(struct nls_table *nls, u8 *ch, u16 uni, s32 *lossy)
 		return 1;
 	}
 
-	if ((len = nls->uni2char(uni, ch, NLS_MAX_CHARSET_SIZE)) < 0) {
+	len = nls->uni2char(uni, ch, NLS_MAX_CHARSET_SIZE);
+	if (len < 0) {
 		/* conversion failed */
 		printk("%s: fail to use nls\n", __func__);
 		if (lossy != NULL)

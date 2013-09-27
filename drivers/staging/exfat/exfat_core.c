@@ -1638,11 +1638,13 @@ s32 clear_cluster(struct super_block *sb, u32 clu)
 	}
 
 	for (; s < n; s++) {
-		if ((ret = sector_read(sb, s, &tmp_bh, 0)) != FFS_SUCCESS)
+		ret = sector_read(sb, s, &tmp_bh, 0);
+		if (ret != FFS_SUCCESS)
 			return ret;
 
 		memset((char *) tmp_bh->b_data, 0x0, p_bd->sector_size);
-		if ((ret = sector_write(sb, s, tmp_bh, 0)) != FFS_SUCCESS)
+		ret = sector_write(sb, s, tmp_bh, 0);
+		if (ret != FFS_SUCCESS)
 			break;
 	}
 
@@ -3278,7 +3280,7 @@ s32 write_partial_entries_in_entry_set(struct super_block *sb, ENTRY_SET_CACHE_T
 	dir.size = 0xffffffff;
 
 	byte_offset = (es->sector - START_SECTOR(dir.dir)) << p_bd->sector_size_bits;
-	byte_offset += ((void**)ep - &(es->__buf)) + es->offset;
+	byte_offset += ((void **)ep - &(es->__buf)) + es->offset;
 
 	ret = _walk_fat_chain(sb, &dir, byte_offset, &clu);
 	if (ret != FFS_SUCCESS)
